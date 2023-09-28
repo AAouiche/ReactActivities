@@ -1,0 +1,40 @@
+/* body{
+    background-color: #eaeaea
+}
+
+.ui.inverted.top.fixed.menu */
+/* Navbar overall styling */
+.ui.menu {
+    font-size: 1.15em; /* Increase the font size a bit */
+    border-radius: 0; /* Remove border radius for a flat look */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+/* Navbar logo styling */
+.navbar-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px; /* Add some space between the logo and the text */
+}
+
+/* Item hover effect */
+.ui.menu .item:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Light overlay on hover */
+}
+
+/* Active item styling */
+.ui.menu .active.item {
+    border-bottom: 3px solid #2185d0; /* Blue underline for active item */
+    background: none; /* Remove background */
+}
+
+/* Styling the Create Activity button */
+.ui.button {
+    background-color: #2185d0; /* Blue background */
+    color: white;
+    font-weight: bold; /* Bold text */
+}
+
+.ui.button:hover {
+    background-color: #167ab7; /* Darken on hover */
+}
