@@ -1,31 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios'; 
 import NavBar from './NavBar';
-import '../../css/App.css';
+ import '../../css/App.css';
 import ActivityDash from '../../features/activities/dashboard/ActivityDash';
 import { Activity } from '../models/activity';
+import agent from '../api/agent';
+import { StoreContext, useStore } from '../Stores/rootStore';
+import LoadingComponent from './LoadingComponent';
+import {  observer } from 'mobx-react-lite';
+import { Outlet, useLocation } from 'react-router-dom';
+import HomePage from '../../features/home/HomePage';
+
 
 function App() {
-    const [activities, setActivities] = useState<Activity[]>([]);
-
+    
+    const location = useLocation();
+    
+    const { activityStore } = useStore();
+    const { activityMap } = activityStore;
+    
     useEffect(() => {
-        // Fetching the list of activities from the backend
-        axios.get<Activity[]>('https://localhost:44335/api/Activity/List')
-             .then(response => {
-                 setActivities(response.data);
-             })
-             .catch(error => {
-                 console.error('Error fetching activities:', error);
-                 // You might want to set some error state here as well for user feedback
-             });
-    }, []); // Empty dependency array means this useEffect runs once when the component mounts
+        activityStore.loadActivities();
+    }, [activityStore]);
+    
+    
+    if (activityStore.loading ) return <LoadingComponent content='Loading app...' />
 
     return (
-        <div className="App">
+        <>
+        {location.pathname === '/' ? <HomePage/> :(
+            <div className="App">
             <NavBar/>
-            <ActivityDash activities={activities}/>  {/* Assuming you want to pass the fetched activities as a prop */}
+            <Outlet/>
         </div>
+        )}
+        
+        </>
+        
     );
 }
 
-export default App;
+export default observer(App);
