@@ -46,7 +46,11 @@ export default function ActivityForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement| HTMLTextAreaElement>) => {
     e.preventDefault(); 
       if(!activity.id){
-        activityStore.createActivity(activity).then(() =>navigate(`/activity/${activity.id}`));
+        activityStore.createActivity(activity).then((createdActivity) => {
+          console.log('Created Activity in Component:', createdActivity);
+          console.log('Navigating to:', `/activity/${createdActivity.id}`);
+          navigate(`/activity/${createdActivity.id}`);
+      })
       }else{
         activityStore.editActivity(activity).then(() =>navigate(`/activity/${activity.id}`));
       }

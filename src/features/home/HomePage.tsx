@@ -1,9 +1,20 @@
-import { Container } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { Container, Header, Segment, Image, Button } from "semantic-ui-react";
 
 export default function HomePage(){
     return(
-        <Container style={{marginTop: '7em'}}>
-            <h1>Home Page</h1>
-        </Container>
+        <Segment vertical className='mhead' >
+           <Container text>
+            <Header as='h2' inverted>
+            <Image size='massive' src='/assets/logo.png' alt='logo' style={{marginBottom:12}}/>
+            First Project
+            </Header>
+            <Button as ={Link} to='/activities' size='huge' inverted>
+                To Activities!
+            </Button>
+              
+           </Container>
+        </Segment>
+
     )
 }

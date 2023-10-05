@@ -51,7 +51,7 @@ function handleDelete(event: React.MouseEvent<HTMLButtonElement>, id: string){
                 <span>{activity.description}</span>
                 <Button
                 as = {Link}
-                to = {`/activties/${activity.id}`}
+                to = {`/activity/${activity.id}`}
                 color='blue'
                 floated='right'
                 content='view'

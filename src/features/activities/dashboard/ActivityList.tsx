@@ -21,6 +21,7 @@ function ActivityList() {
        
     }
     
+    
     return (
         <>
         {activityStore.groupActivitiesByDate.map(([group,activities]) =>(

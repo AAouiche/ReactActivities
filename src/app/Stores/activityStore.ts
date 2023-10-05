@@ -57,14 +57,18 @@ class ActivityStore {
     
         try {
             // Use manual activity instead of the passed one
-            await agent.Activities.create(activity);
+            const createdActivity = await agent.Activities.create(activity);
             runInAction(() => {
-                this.setActivity(manualActivity);
+                this.setActivity(createdActivity);
             });
+            console.log(createdActivity);
+            return createdActivity
         } catch (error) {
             console.error("Failed to create activity", error);
         } finally {
+            runInAction(() => {
             this.loading = false;
+            });
         }
     };
 
@@ -123,7 +127,9 @@ class ActivityStore {
             } catch (error) {
                 console.error("Failed to load activity details", error);
             } finally {
+                runInAction(() => {
                 this.loading = false;
+                });
             }
         }
     };
