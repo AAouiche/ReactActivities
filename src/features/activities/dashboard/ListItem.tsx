@@ -56,6 +56,12 @@ function handleDelete(event: React.MouseEvent<HTMLButtonElement>, id: string){
                 floated='right'
                 content='view'
                 />
+                <Button
+                onClick={(e) => handleDelete(e, activity.id!)}
+                color='blue'
+                floated='right'
+                content='delete'
+                />
             </Segment>
          </Segment.Group>
 

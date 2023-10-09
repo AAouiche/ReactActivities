@@ -10,6 +10,8 @@ class ActivityStore {
     editMode = false;
     loading: boolean = true;
     loadingInitial: boolean = false;
+    errors: string[] = [];
+    
    
 
     constructor() {
@@ -24,7 +26,7 @@ class ActivityStore {
              runInAction(() => {
                 this.setLoading(false);
                  activities.forEach(activity => {
-                  activity.date = this.formatDate(activity.date);
+                  activity.date = this.formatDate(activity.date!);
                    this.setActivity(activity);
                 });
             });
@@ -47,24 +49,32 @@ class ActivityStore {
         // Create a manual activity
         const manualActivity: Activity = {
             
-            title: "Sampleivity",
-            description: "This iample description.",
-            category: "Sampory",
+            title: "",
+            description: "",
+            category: "",
             date: new Date().toISOString(),
-            city: "Sampty",
-            venue: "Sampenue"
+            city: "",
+            venue: ""
         };
-    
+
+        
         try {
             // Use manual activity instead of the passed one
+            console.log('Sending activity to API:', activity );
+            //console.log('Sending manual activity to API:', manualActivity );
             const createdActivity = await agent.Activities.create(activity);
+            console.log('Sent activity to API:', activity );
             runInAction(() => {
                 this.setActivity(createdActivity);
             });
+            
             console.log(createdActivity);
             return createdActivity
         } catch (error) {
-            console.error("Failed to create activity", error);
+            console.error("activity", error);
+            this.setErrors(["gfjhdghdf"]);
+            console.log(this.errors);
+            throw error;
         } finally {
             runInAction(() => {
             this.loading = false;
@@ -163,14 +173,17 @@ class ActivityStore {
     formatDate = (date:string) =>{
        return moment(date).format('YYYY-MM-DD');
     }
+    setErrors = (errors: string[]) => {
+        this.errors = errors;
+    };
     get activityByDate(){
         return Array.from(this.activityMap.values()).sort((a,b) =>
-          Date.parse(a.date) - Date.parse(b.date));
+          Date.parse(a.date!) - Date.parse(b.date!));
     }
     get groupActivitiesByDate() {
         return Object.entries(
             this.activityByDate.reduce((activities, activity) => {
-                const dateKey = this.formatDate(activity.date);
+                const dateKey = this.formatDate(activity.date!);
                 activities[dateKey] = activities[dateKey] ? [...activities[dateKey], activity] : [activity];
                 return activities;
             }, {} as { [key: string]: Activity[] })

@@ -37,3 +37,6 @@ body {
   .App{
     padding: 10rem;
   }
+  .ui.message .list .item {
+    display: block;
+}
