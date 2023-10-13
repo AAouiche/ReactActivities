@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Segment, Form, Button } from "semantic-ui-react";
+import { Segment,  Button, FormField, Label } from "semantic-ui-react";
 import { useStore } from "../../../app/Stores/rootStore";
 import { Activity } from "../../../app/models/activity";
 import {  useNavigate, useParams } from 'react-router-dom';
-import ErrorMessage from "../../../app/Errors/ErrorMessage";
-import { Formik } from "formik";
+
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import ErrMessage from "../../../app/Errors/ErrMessage";
+import { CustomTextInput } from "../../../app/form/customTextInput";
+import { CustomTextArea } from "../../../app/form/customTextArea";
+import { CustomSelect } from "../../../app/form/customSelect";
+import { Options } from "../../../app/form/options";
+import { CustomDate } from "../../../app/form/customDate";
 
 
 export default function ActivityForm() {
@@ -19,10 +26,19 @@ export default function ActivityForm() {
     id: undefined,
     title: "",
     description: "",
-    date: currentDate,
+    date: new Date(currentDate),
     category: "",
     city: "",
     venue: "",
+  });
+
+  const activityValidationSchema = Yup.object().shape({
+    title: Yup.string().required('Title is required'),
+    description: Yup.string().required('Description is required'),
+    date: Yup.date().required('Date is required').nullable(),
+    city: Yup.string().required('City is required'),
+    category: Yup.string().required('Category is required'),
+    venue: Yup.string().required('Venue is required')
   });
 
   // Use useEffect to populate form fields when editing
@@ -46,23 +62,20 @@ export default function ActivityForm() {
 };
 
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement| HTMLTextAreaElement>) => {
-    e.preventDefault();
-    try {
-      activityStore.setErrors([]);
-        if(!activity.id){
-            const createdActivity = await activityStore.createActivity(activity);
-            navigate(`/activity/${createdActivity.id}`);
-        } else {
-            await activityStore.editActivity(activity);
-            navigate(`/activity/${activity.id}`);
-        }
-        setErrors([]); // Clearing errors if submission is successful
-    } catch (error:any) {
-        const response = error
-        activityStore.setErrors([error]);
-        //console.log("errors: " + errors);
+const handleSubmit = async (values:Activity) => {
+  try {
+    activityStore.setErrors([]);
+    if (!values.id) {
+      const createdActivity = await activityStore.createActivity(values);
+      navigate(`/activity/${createdActivity.id}`);
+    } else {
+      await activityStore.editActivity(values);
+      navigate(`/activity/${values.id}`);
     }
+  } catch (error:any) {
+    const response = error; // You might want to extract some info from error response
+    activityStore.setErrors([error]); // Also, consider adding relevant error handling
+  }
 };
 // const handleSubmit = async (e: React.FormEvent<HTMLFormElement| HTMLTextAreaElement>) => {
 //   e.preventDefault();
@@ -84,106 +97,33 @@ export default function ActivityForm() {
     ) : null}
     <Segment>
 
-      <Formik initialValues={activity} onSubmit={values => console.log(values)}>
-        {({values,handleChange,handleSubmit}) =>(
-          <Form onSubmit={handleSubmit}>
-          <Form.Input
-            name="title"
-            value={activity.title}
-            onChange={handleChange}
-            placeholder="Title"
-            label="Title"
-          />
-          <Form.TextArea
-            name="description"
-            value={activity.description}
-            onChange={handleChange}
-            placeholder="Description"
-            label="Description"
-          />
-          <Form.Input
-            name="date"
-            type="date"
-            value={activity.date}
-            onChange={handleChange}
-            placeholder="Date"
-            label="Date"
-          />
-          <Form.Input
-            name="city"
-            value={activity.city}
-            onChange={handleChange}
-            placeholder="City"
-            label="City"
-          />
-          <Form.Input
-            name="category"
-            value={activity.category}
-            onChange={handleChange}
-            placeholder="Category"
-            label="Category"
-          />
-          <Form.Input
-            name="venue"
-            value={activity.venue}
-            onChange={handleChange}
-            placeholder="Venue"
-            label="Venue"
-          />
-          <Button primary type="submit" content="Submit" />
-          <Button primary type="button" content="Cancel" />
-        </Form>
+      <Formik 
+      validationSchema={activityValidationSchema} 
+      initialValues={activity} 
+      onSubmit={handleSubmit}>
+        {({handleSubmit}) =>(
+           <Form className="ui form" onSubmit={handleSubmit}>
+           <CustomTextInput name="title" placeholder="Title" label="Title" />
+           <CustomTextArea rows ={3} name="description" placeholder="Description" label="Description" />
+           <CustomDate
+             placeholderText="Date"
+             timeCaption="time"
+             dateFormat='MMMM d, yyyy h:mm aa'
+             name="date"
+             showTimeSelect
+           />
+           <CustomSelect options={Options}name="category" placeholder="Category" label="Category" />
+           <CustomTextInput name="city" placeholder="City" label="City" />
+           <CustomTextInput name="venue" placeholder="Venue" label="Venue" />
+           
+           <Button primary type="submit" content="Submit" />
+           <Button type="button" content="Cancel" />
+         </Form>
         )}
       </Formik>
-      <Form onSubmit={handleSubmit}>
-        <Form.Input
-          name="title"
-          value={activity.title}
-          onChange={handleChange}
-          placeholder="Title"
-          label="Title"
-        />
-        <Form.TextArea
-          name="description"
-          value={activity.description}
-          onChange={handleChange}
-          placeholder="Description"
-          label="Description"
-        />
-        <Form.Input
-          name="date"
-          type="date"
-          value={activity.date}
-          onChange={handleChange}
-          placeholder="Date"
-          label="Date"
-        />
-        <Form.Input
-          name="city"
-          value={activity.city}
-          onChange={handleChange}
-          placeholder="City"
-          label="City"
-        />
-        <Form.Input
-          name="category"
-          value={activity.category}
-          onChange={handleChange}
-          placeholder="Category"
-          label="Category"
-        />
-        <Form.Input
-          name="venue"
-          value={activity.venue}
-          onChange={handleChange}
-          placeholder="Venue"
-          label="Venue"
-        />
-        <Button primary type="submit" content="Submit" />
-        <Button primary type="button" content="Cancel" />
-      </Form>
+      
     </Segment>
-    {activityStore.errors  && <ErrorMessage  />}
+    {activityStore.errors  && <ErrMessage  />}
     
     </>
   );

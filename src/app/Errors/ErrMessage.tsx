@@ -6,7 +6,7 @@ interface Props{
     errors:string[];
 }
 
-function ErrorMessage() {
+function ErrMessage() {
     const { activityStore } = useStore();
 
     return (
@@ -23,4 +23,4 @@ function ErrorMessage() {
     );
 }
 
-export default observer(ErrorMessage);
+export default observer(ErrMessage);

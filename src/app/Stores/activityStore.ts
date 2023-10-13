@@ -26,7 +26,7 @@ class ActivityStore {
              runInAction(() => {
                 this.setLoading(false);
                  activities.forEach(activity => {
-                  activity.date = this.formatDate(activity.date!);
+                  
                    this.setActivity(activity);
                 });
             });
@@ -47,15 +47,15 @@ class ActivityStore {
         this.loading = true;
     
         // Create a manual activity
-        const manualActivity: Activity = {
+        // const manualActivity: Activity = {
             
-            title: "",
-            description: "",
-            category: "",
-            date: new Date().toISOString(),
-            city: "",
-            venue: ""
-        };
+        //     title: "",
+        //     description: "",
+        //     category: "",
+        //     date: new Date().toISOString(),
+        //     city: "",
+        //     venue: ""
+        // };
 
         
         try {
@@ -164,13 +164,14 @@ class ActivityStore {
     }
     setActivity = (activity: Activity) => {
         if (activity && activity.id != null) {
+            activity.date = new Date(activity.date!);
             this.activityMap.set(activity.id, activity);
         } else {
             console.error("Activity or Activity ID is undefined:", activity);
             // Handle error as per your use case
         }
     };
-    formatDate = (date:string) =>{
+    formatDate = (date:Date) =>{
        return moment(date).format('YYYY-MM-DD');
     }
     setErrors = (errors: string[]) => {
@@ -178,7 +179,7 @@ class ActivityStore {
     };
     get activityByDate(){
         return Array.from(this.activityMap.values()).sort((a,b) =>
-          Date.parse(a.date!) - Date.parse(b.date!));
+        a.date!.getTime() - b.date!.getTime());
     }
     get groupActivitiesByDate() {
         return Object.entries(

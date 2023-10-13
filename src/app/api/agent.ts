@@ -3,6 +3,8 @@ import { Activity } from "../models/activity";
 import { toast } from "react-toastify";
 import {  useNavigate, useParams } from 'react-router-dom';
 import { router } from "../router/Routes";
+import { User } from "../models/user";
+import { form } from "../models/form";
 
 //const navigate = useNavigate();
 
@@ -91,8 +93,15 @@ const Activities = {
     edit: (activity: Activity) => requests.put('/Activity/Edit', activity), 
     delete: (id: string) => requests.delete(`/Activity/Delete/${id}`) 
 }
+const Account ={
+    LoggedIn: ():Promise<User>=>requests.get('/Account/getUser'),
+    login: (user:form) =>requests.post('Account/login',user),
+    register: (user:form) => requests.post('Account/register',user)
+    
+}
 
 const agent = {
-    Activities
+    Activities,
+    Account
 }
 export default agent;
