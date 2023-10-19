@@ -10,6 +10,7 @@ export interface Activity {
     category?: string;
     city?: string;
     venue?: string;
+    hosting?:boolean;
     host?: Attendee;
     attendees?: Attendee[]; // This line includes an array of attendees
 }

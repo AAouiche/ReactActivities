@@ -4,6 +4,7 @@ import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Activity} from "../../../app/models/activity";
 import { format } from 'date-fns';
 import { Attendee } from '../../../app/models/attendee';
+import { useStore } from '../../../app/Stores/rootStore';
 
 
 
@@ -26,6 +27,7 @@ interface Props {
 }
 
 export default observer (function ActivityDetailedHeader({activity}: Props) {
+    const {activityStore} =useStore();
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
@@ -49,11 +51,15 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
                 </Segment>
             </Segment>
             <Segment clearing attached='bottom'>
-                <Button color='teal'>Join Activity</Button>
-                <Button>Cancel attendance</Button>
-                <Button color='orange' floated='right'>
-                    Manage Event
-                </Button>
+                {activity.hosting ? (
+                    <Button  color='orange' floated='right'>
+                        Manage Event
+                    </Button>
+                ) : activity.going ? (
+                    <Button onClick={activityStore.changeAttendance} >Cancel attendance</Button>
+                ) : (
+                    <Button onClick={activityStore.changeAttendance} color='teal'>Join Activity</Button>
+                )}
             </Segment>
         </Segment.Group>
     )

@@ -91,7 +91,8 @@ const Activities = {
         throw error;
     }),
     edit: (activity: Activity) => requests.put('/Activity/Edit', activity), 
-    delete: (id: string) => requests.delete(`/Activity/Delete/${id}`) 
+    delete: (id: string) => requests.delete(`/Activity/Delete/${id}`),
+    attend:(id:string) => requests.post(`/Activity/Attending/${id}`,{})
 }
 const Account ={
     LoggedIn: ():Promise<User>=>requests.get('/Account/getUser'),

@@ -24,7 +24,7 @@ export default observer(function ActivityDetailedSidebar ({attendee}:Props) {
             <Segment attached>
             <List relaxed divided>
     {attendee.map(attendee =>(
-        <Item style={{ position: 'relative' }}>
+        <Item key ={attendee.username} style={{ position: 'relative' }}>
             {attendee.isHost && (
                 <Label
                     style={{ position: 'absolute' }}

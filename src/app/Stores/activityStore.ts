@@ -14,7 +14,7 @@ class ActivityStore {
     loading: boolean = true;
     loadingInitial: boolean = false;
     errors: string[] = [];
-    userStore = rootStore.userStore;
+    
    
 
    
@@ -23,6 +23,7 @@ class ActivityStore {
         makeAutoObservable(this);
         
     }
+    
 
     loadActivities = async () => {
         
@@ -155,7 +156,44 @@ class ActivityStore {
             }
         }
     };
-
+    changeAttendance = async() => {
+        const user = rootStore.userStore.user;
+        if (!user) {
+            console.error("User not authenticated");
+            return;
+        }
+    
+        this.loading = true;
+        try {
+            await agent.Activities.attend(this.selectedActivity!.id!);
+            runInAction(() => {
+                if (this.selectedActivity) {
+                    // Toggle attendance status
+                    const attendee = this.selectedActivity.attendees?.find(a => a.username === user.userName);
+                    if (attendee) {
+                        // User is already attending, so remove them
+                        this.selectedActivity.attendees = this.selectedActivity.attendees?.filter(a => a.username !== user.userName);
+                        this.selectedActivity.going = false;
+                    } else {
+                        // User is not attending, so add them
+                        if (!this.selectedActivity.attendees) {
+                            this.selectedActivity.attendees = [];
+                        }
+                        this.selectedActivity.attendees.push({
+                            username: user.userName,
+                            displayName: user.displayName
+                           
+                        });
+                        this.selectedActivity.going = true;
+                    }
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            runInAction(() => this.loading = false);
+        }
+    }
     setLoading = (state: boolean) => {
         this.loading = state;
     }
@@ -175,7 +213,18 @@ class ActivityStore {
         return this.activityMap.get(id);
     }
     setActivity = (activity: Activity) => {
-        const user = this.userStore.user;
+        const user = rootStore.userStore.user;
+        if(user) {
+            
+            for(let i = 0; i < activity.attendees!.length; i++) {
+                if(activity.attendees![i].username === user.userName) {
+                    activity.going = true;
+                    break;  // Exit the loop once a match is found
+                }
+            }
+            activity.hosting = activity.host?.username === user.userName;
+            
+        }
         if (activity && activity.id != null) {
             activity.date = new Date(activity.date!);
             this.activityMap.set(activity.id, activity);

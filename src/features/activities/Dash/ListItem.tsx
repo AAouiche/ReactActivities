@@ -33,12 +33,18 @@ function handleDelete(event: React.MouseEvent<HTMLButtonElement>, id: string){
                 <Item.Group>
                    <Item.Image size='tiny' circular src='/assets/user.png'/>
                    <Item.Content>
-                        <Item.Header as={Link} to={`/activity/${activity.id}`}>
-                            {activity.title}
-                        </Item.Header>
-                        <Item.Description>Hosted by {activity.host!.username}</Item.Description>
-                        
-                   </Item.Content>
+    <Item.Header as={Link} to={`/activity/${activity.id}`}>
+        {activity.title}
+    </Item.Header>
+    <Item.Description>Hosted by {activity.host!.username}</Item.Description>
+
+    {/* Conditionally render labels based on user role */}
+    {activity.hosting ? (
+        <Label color="blue">Hosting</Label>
+    ) : activity.going ? (
+        <Label color="green">Attending</Label>
+    ) : null}
+</Item.Content>
                 </Item.Group>
             </Segment>
             <Segment>
