@@ -3,6 +3,9 @@ import React from 'react'
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Activity} from "../../../app/models/activity";
 import { format } from 'date-fns';
+import { Attendee } from '../../../app/models/attendee';
+
+
 
 const activityImageStyle = {
     filter: 'brightness(30%)'
@@ -19,6 +22,7 @@ const activityImageTextStyle = {
 
 interface Props {
     activity: Activity
+   
 }
 
 export default observer (function ActivityDetailedHeader({activity}: Props) {
@@ -37,7 +41,7 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
                                 />
                                 <p>{format(activity.date!, 'yyyy-MM-dd HH:mm')}</p>
                                 <p>
-                                    Hosted by <strong>Bob</strong>
+                                    Hosted by <strong>{activity.host?.username}</strong>
                                 </p>
                             </Item.Content>
                         </Item>

@@ -21,6 +21,7 @@ export default function ActivityForm() {
   const { id } = useParams();
   const currentDate = new Date().toISOString().split("T")[0];
   const [errors, setErrors] = useState<string[] | null>(null);
+  const today = new Date();
  
   const [activity, setActivity] = useState<Activity>({
     id: undefined,
@@ -35,7 +36,10 @@ export default function ActivityForm() {
   const activityValidationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
-    date: Yup.date().required('Date is required').nullable(),
+    date: Yup.date()
+          .min(today, 'Date must be in the future')
+          .required('Date is required')
+          .nullable(),
     city: Yup.string().required('City is required'),
     category: Yup.string().required('Category is required'),
     venue: Yup.string().required('Venue is required')
@@ -67,7 +71,7 @@ const handleSubmit = async (values:Activity) => {
     activityStore.setErrors([]);
     if (!values.id) {
       const createdActivity = await activityStore.createActivity(values);
-      navigate(`/activity/${createdActivity.id}`);
+      //navigate(`/activity/${createdActivity.id}`);
     } else {
       await activityStore.editActivity(values);
       navigate(`/activity/${values.id}`);
@@ -123,7 +127,7 @@ const handleSubmit = async (values:Activity) => {
       </Formik>
       
     </Segment>
-    {activityStore.errors  && <ErrMessage  />}
+    {/* {activityStore.errors  && <ErrMessage  />} */}
     
     </>
   );

@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios'; 
+
 import NavBar from './NavBar';
  import '../../css/App.css';
-import ActivityDash from '../../features/activities/dashboard/ActivityDash';
-import { Activity } from '../models/activity';
-import agent from '../api/agent';
+
 import { StoreContext, useStore } from '../Stores/rootStore';
 import LoadingComponent from './LoadingComponent';
 import {  observer } from 'mobx-react-lite';
@@ -17,12 +15,18 @@ function App() {
     
     const location = useLocation();
     
-    const { activityStore } = useStore();
-    const { activityMap } = activityStore;
+    const { activityStore, userStore } = useStore();
+    
     
     useEffect(() => {
-        activityStore.loadActivities();
-    }, [activityStore]);
+        if (userStore.isLoggedIn) {
+            activityStore.loadActivities();
+            console.log('called');
+        } else {
+            
+            activityStore.clearActivities(); 
+        }
+    }, [activityStore, userStore.isLoggedIn]); 
     
     
     if (activityStore.loading ) return <LoadingComponent content='Loading app...' />

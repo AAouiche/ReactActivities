@@ -2,6 +2,9 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { Activity } from "../models/activity";
 import agent from "../api/agent";
 import moment from "moment";
+import { Store, rootStore, useStore } from "./rootStore";
+import UserStore from "./userStore";
+import { Root } from "react-dom/client";
 
 class ActivityStore {
     activities: Activity[] = [];
@@ -11,11 +14,14 @@ class ActivityStore {
     loading: boolean = true;
     loadingInitial: boolean = false;
     errors: string[] = [];
-    
+    userStore = rootStore.userStore;
+   
+
    
 
     constructor() {
         makeAutoObservable(this);
+        
     }
 
     loadActivities = async () => {
@@ -97,6 +103,12 @@ class ActivityStore {
             this.loading = false;
         }
     };
+    clearActivities = () =>{
+      runInAction(() =>{
+        this.activityMap.clear();
+        this.loading = false;
+      })
+    }
 
     deleteActivity = async (id: string) => {
         this.loading = true;
@@ -163,6 +175,7 @@ class ActivityStore {
         return this.activityMap.get(id);
     }
     setActivity = (activity: Activity) => {
+        const user = this.userStore.user;
         if (activity && activity.id != null) {
             activity.date = new Date(activity.date!);
             this.activityMap.set(activity.id, activity);

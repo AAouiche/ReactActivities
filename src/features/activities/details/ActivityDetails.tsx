@@ -39,7 +39,7 @@ function ActivityDetails() {
                     />
                 </Grid.Column>
                 <Grid.Column width={6}>
-                    <DetailsSideBar/>
+                    <DetailsSideBar attendee={activity.attendees!}/>
                 </Grid.Column>
             </Grid>
             // <Card>

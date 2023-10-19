@@ -35,24 +35,24 @@ axios.interceptors.response.use(
                     // Throw errors so that they can be caught and handled upstream.
                     throw modalStateErrors.flat();
                 } else {
-                    toast.error(response.data);
+                   // toast.error(response.data);
                     // Optionally log or throw the error as well
                     console.error('Error 400 without stackTrace:', response.data);
                     throw new Error('Error 400 without stackTrace');
                 }
                 break;
                 case 401:
-                    toast.warn("You're not authorized to access this resource or perform this operation.");
+                   // toast.warn("You're not authorized to access this resource or perform this operation.");
                     break;
                 case 403:
-                    toast.warn("Forbidden. You don’t have permission to perform this operation.");
+                    //toast.warn("Forbidden. You don’t have permission to perform this operation.");
                     break;
                 case 404:
-                    toast.error("Resource not found.");
+                    //toast.error("Resource not found.");
                     router.navigate('not-found'); // Ensure this route exists in your router
                     break;
                 default:
-                    toast.error("An unexpected server error occurred.");
+                  //  toast.error("An unexpected server error occurred.");
             }
         } else {
             console.error("Error Message:", error.message); // Log a generic error message

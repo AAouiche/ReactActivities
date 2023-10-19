@@ -9,8 +9,11 @@ export default function HomePage(){
             <Image size='massive' src='/assets/logo.png' alt='logo' style={{marginBottom:12}}/>
             First Project
             </Header>
-            <Button as ={Link} to='/activities' size='huge' inverted>
-                To Activities!
+            <Button as ={Link} to='/login' size='huge' inverted>
+                Login
+            </Button>
+            <Button as ={Link} to='/register' size='huge' inverted>
+                Register
             </Button>
               
            </Container>

@@ -3,11 +3,14 @@ import { User } from "../models/user";
 import { form } from "../models/form";
 import agent from "../api/agent";
 import axios from "axios";
+import { useStore } from "./rootStore";
+
 
 export default class UserStore{
     user:User |null = null;
     token = localStorage.getItem('userToken');
     isLoggedIn = false;  
+    
     constructor(){
         makeAutoObservable(this)
         reaction(
@@ -21,30 +24,35 @@ export default class UserStore{
             }
             
            )
-           this.initializeUser();
+           ;
+           //this.initializeUser();
     }
     get loggedIn(){
 
         return this.user;
     }
-    login = async (submission:form)=>{
-        const user = await agent.Account.login(submission);
-        runInAction(()=> {
-            this.user = user
-            this.isLoggedIn=true;
-            console.log('Logged in user object:', user);
-        }
-        
-        );
-        
-        console.log('this user',this.user);
-    }
+    login = async (submission: form) => {
+      const user = await agent.Account.login(submission);
+      runInAction(() => {
+          this.user = user;
+          this.isLoggedIn = true;
+          console.log('Logged in user object:', user);
+  
+          // Assuming user.token holds the JWT token
+          if (user.token) {
+              this.setToken(user.token);
+              
+          }
+      });
+  };
     register = async (submission:form)=>{
         await agent.Account.register(submission);
     }
+    
 
     setToken = (token:string | null) => {
         if (token) {
+            this.token = token;
             localStorage.setItem('token', token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         } else {
@@ -84,9 +92,12 @@ export default class UserStore{
         }
       }
       logout = ()=>{
-        runInAction(()=> {
-        this.user =null;
-        localStorage.clear();
-        }
+        runInAction(() =>{
+          this.user =null;
+        this.isLoggedIn=false;
+        localStorage.clear()
+        })
+        
+        
       }
 }

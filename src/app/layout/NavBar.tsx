@@ -3,12 +3,18 @@ import { NavLink } from "react-router-dom";
 import { Button, Container, Dropdown, Menu, Image} from "semantic-ui-react";
 import { useStore } from "../Stores/rootStore";
 import { observer } from "mobx-react-lite";
+import {  useNavigate, useParams } from 'react-router-dom';
 
 
 
  function NavBar(){
     const { userStore} = useStore();
+    const navigate = useNavigate();
     
+    function handleLogout() {
+        userStore.logout();
+        navigate('/'); // Navigate to the home page
+    }
     console.log('NavBar Rendering:', userStore.user);
     return(
         <Menu inverted fixed = 'top' >
@@ -28,7 +34,7 @@ import { observer } from "mobx-react-lite";
                         <Dropdown.Menu>
                             <Dropdown.Item text='Profile' icon='user' />
                             <Dropdown.Item text='Settings' icon='settings' />
-                            <Dropdown.Item text='Logout' icon='power' onClick={userStore.logout} />
+                            <Dropdown.Item text='Logout' icon='power' onClick={handleLogout} />
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Item>
