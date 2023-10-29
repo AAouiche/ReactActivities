@@ -8,7 +8,7 @@ import { form } from "../models/form";
 
 //const navigate = useNavigate();
 
-axios.defaults.baseURL = 'https://localhost:44335/api';
+axios.defaults.baseURL = 'https://localhost:44314/api';
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 axios.interceptors.response.use(
@@ -40,7 +40,7 @@ axios.interceptors.response.use(
                     console.error('Error 400 without stackTrace:', response.data);
                     throw new Error('Error 400 without stackTrace');
                 }
-                break;
+                
                 case 401:
                    // toast.warn("You're not authorized to access this resource or perform this operation.");
                     break;
@@ -73,7 +73,7 @@ const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {
     get: (url: string) => axios.get(url).then(responseBody),
-    post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
+    post: (url: string, body: {},headers?:any) => axios.post(url, body, { headers }).then(responseBody),
     put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
     delete: (url: string) => axios.delete(url).then(responseBody)
 };
@@ -100,9 +100,16 @@ const Account ={
     register: (user:form) => requests.post('Account/register',user)
     
 }
+const Image = {
+    upload: (formData: FormData) => requests.post('/Image/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    }),
+    
+};
 
 const agent = {
     Activities,
-    Account
+    Account,
+    Image
 }
 export default agent;

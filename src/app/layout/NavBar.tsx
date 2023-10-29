@@ -29,7 +29,7 @@ import {  useNavigate, useParams } from 'react-router-dom';
                 </Menu.Item>
                 {userStore.isLoggedIn && (
                 <Menu.Item position='right'>
-                    <Image avatar spaced='right' src={ '/assets/user.png'} />
+                     <Image avatar spaced='right' src={userStore.user?.imageUrl || '/assets/user.png'} />
                     <Dropdown pointing='top left' text={userStore.user?.userName}>
                         <Dropdown.Menu>
                             <Dropdown.Item text='Profile' icon='user' />

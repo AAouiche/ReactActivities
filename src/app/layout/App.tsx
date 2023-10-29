@@ -29,7 +29,7 @@ function App() {
     }, [activityStore, userStore.isLoggedIn]); 
     
     
-    if (activityStore.loading ) return <LoadingComponent content='Loading app...' />
+    if (activityStore.loading || userStore.loading ) return <LoadingComponent content='Loading app...' />
 
     return (
         <>

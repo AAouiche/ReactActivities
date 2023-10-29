@@ -14,6 +14,8 @@ class ActivityStore {
     loading: boolean = true;
     loadingInitial: boolean = false;
     errors: string[] = [];
+    currentFilter: "all" | "going" | "hosting" = "all";
+    selectedDate: Date | null = null; 
     
    
 
@@ -28,16 +30,17 @@ class ActivityStore {
     loadActivities = async () => {
         
         try {
+            this.loading = true;
             const activities = await agent.Activities.list();
-            
+            console.log(activities);      
              runInAction(() => {
-                this.setLoading(false);
+                this.loading = false;
                  activities.forEach(activity => {
                   
                    this.setActivity(activity);
                 });
             });
-            console.log(activities);
+            console.log("loadactivities");
             console.log(this.activityMap);
 
         } catch (error) {
@@ -52,17 +55,7 @@ class ActivityStore {
 
     createActivity = async (activity: Activity) => {
         this.loading = true;
-    
-        // Create a manual activity
-        // const manualActivity: Activity = {
-            
-        //     title: "",
-        //     description: "",
-        //     category: "",
-        //     date: new Date().toISOString(),
-        //     city: "",
-        //     venue: ""
-        // };
+
 
         
         try {
@@ -245,12 +238,46 @@ class ActivityStore {
     }
     get groupActivitiesByDate() {
         return Object.entries(
-            this.activityByDate.reduce((activities, activity) => {
+            this.filteredActivities.reduce((activities, activity) => {
                 const dateKey = this.formatDate(activity.date!);
                 activities[dateKey] = activities[dateKey] ? [...activities[dateKey], activity] : [activity];
                 return activities;
             }, {} as { [key: string]: Activity[] })
         );
+    }
+    setFilter = (filter: "all" | "going" | "hosting") => {
+        this.currentFilter = filter;
+        console.log(this.currentFilter)
+    }
+    get filteredActivities(): Activity[] {
+        const activitiesArray = Array.from(this.activityMap.values());
+        
+        let filteredByType: Activity[] = [];
+    
+        switch (this.currentFilter) {
+            case "going":
+                filteredByType = activitiesArray.filter(activity => activity.going && !activity.hosting);
+                break;
+            case "hosting":
+                filteredByType = activitiesArray.filter(activity => activity.hosting);
+                break;
+            default:
+                filteredByType = activitiesArray;
+                break;
+        }
+    
+        
+        if (this.selectedDate) {
+            return filteredByType.filter(activity => activity.date && activity.date.toISOString().split('T')[0] === this.selectedDate!.toISOString().split('T')[0]);
+        }
+    
+        return filteredByType;
+    }
+    isFilterActive(filter: "all" | "going" | "hosting"): boolean {
+        return this.currentFilter === filter;
+    }
+    clearSelectedDate() {
+        this.selectedDate = null;
     }
 }
 

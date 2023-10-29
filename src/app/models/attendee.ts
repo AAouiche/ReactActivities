@@ -3,4 +3,5 @@ export interface Attendee {
     displayName: string;
     bio?: string;
     isHost?:boolean;
+    imageUrl?: string;
 }

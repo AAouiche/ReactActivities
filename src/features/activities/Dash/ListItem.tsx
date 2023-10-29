@@ -19,19 +19,27 @@ export default function ListItem({activity}: Props){
     const { activityStore } = useStore();
 
 
-function handleDelete(event: React.MouseEvent<HTMLButtonElement>, id: string){
-    event.preventDefault();  // Using event here
-    try{
-        activityStore.deleteActivity(id);
-    } catch(error) {
-        console.error("Error:", error);
+    function handleDelete(event: React.MouseEvent<HTMLButtonElement>, id: string) {
+        event.preventDefault();  // Using event here
+    
+        // Confirm deletion
+        const isConfirmed = window.confirm("Are you sure you want to delete this activity?");
+    
+        if (!isConfirmed) {
+            return; // Exit function if user selects "Cancel" in the confirmation dialog
+        }
+    
+        try {
+            activityStore.deleteActivity(id);
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
-}
     return(
          <Segment.Group>
             <Segment>
                 <Item.Group>
-                   <Item.Image size='tiny' circular src='/assets/user.png'/>
+                   <Item.Image size='tiny' circular src={activity.host?.imageUrl || '/assets/user.png'}/>
                    <Item.Content>
     <Item.Header as={Link} to={`/activity/${activity.id}`}>
         {activity.title}

@@ -12,5 +12,6 @@ export interface Activity {
     venue?: string;
     hosting?:boolean;
     host?: Attendee;
+    
     attendees?: Attendee[]; // This line includes an array of attendees
 }

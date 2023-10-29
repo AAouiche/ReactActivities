@@ -10,6 +10,7 @@ export default class UserStore{
     user:User |null = null;
     token = localStorage.getItem('userToken');
     isLoggedIn = false;  
+    loading = false;
     
     constructor(){
         makeAutoObservable(this)
@@ -25,7 +26,7 @@ export default class UserStore{
             
            )
            ;
-           //this.initializeUser();
+           this.initializeUser();
     }
     get loggedIn(){
 
@@ -69,6 +70,7 @@ export default class UserStore{
         }
     }
     initializeUser = async () => {
+      this.loading = true;
         try {
           const userToken = localStorage.getItem('userToken');
           if (userToken) {
@@ -77,10 +79,13 @@ export default class UserStore{
             
             // Fetch user details with the token
             const loggedInUser = await agent.Account.LoggedIn();
+            console.log('Got user details:', loggedInUser);
             runInAction(() => {
+              console.log("initlise user")
               this.user = loggedInUser;
               
               this.isLoggedIn = true;
+              this.loading = false;
             });
           }
         } catch (error) {
@@ -88,6 +93,7 @@ export default class UserStore{
           // Handle the error, possibly by setting `this.isLoggedIn` to `false`
           runInAction(() => {
             this.isLoggedIn = false;
+            this.loading = false;
           });
         }
       }
@@ -100,4 +106,27 @@ export default class UserStore{
         
         
       }
+      uploadProfileImage = async (imageFile: any) => {
+        try {
+            this.loading = true;
+            console.log(imageFile);
+            const formData = new FormData();
+formData.append('imageFile', imageFile);  // 'imageFile' should match the parameter name in your controller
+
+const response = await agent.Image.upload(formData);
+    
+            runInAction(() => {
+                // Handle success, you might want to update the user's profile image link in the store.
+                // For example, assuming the response contains the URL of the uploaded image:
+                // this.user.profileImageUrl = response.imageUrl;
+            });
+        } catch (error) {
+            console.error("Error uploading image:", error);
+            // Handle the error as you see fit. You might want to show a notification to the user.
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
 }

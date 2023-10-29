@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import agent from "../api/agent";
 import { useStore } from "../Stores/rootStore";
 import Debug from "../Debug/Debug";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -19,6 +20,7 @@ const schema = Yup.object().shape({
 
 export default function Login() {
   const {userStore} = useStore();
+  const navigate = useNavigate();
   return (
     <>
       {/* Wrapping form inside formik tag and passing our schema to validationSchema prop */}
@@ -28,6 +30,7 @@ export default function Login() {
         onSubmit={async (values) => {
           try {
               await userStore.login(values); // awaiting the asynchronous login action
+              navigate('/activities');
               console.log('Logged in', values);
           } catch (error) {
               console.error('Login failed', error); // handling error, if login fails
