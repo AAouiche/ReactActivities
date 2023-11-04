@@ -4,6 +4,7 @@ import { Activity } from "../../../app/models/activity";
 import { useStore } from "../../../app/Stores/rootStore";
 import { format } from "date-fns";
 import ListAttendee from "./ListAttendee";
+import { observer } from "mobx-react-lite";
 
 
 interface Props{
@@ -15,7 +16,7 @@ interface Props{
 
 
 
-export default function ListItem({activity}: Props){
+function ListItem({activity}: Props){
     const { activityStore } = useStore();
 
 
@@ -111,3 +112,4 @@ export default function ListItem({activity}: Props){
 
     )
 }
+export default observer(ListItem);

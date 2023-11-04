@@ -13,12 +13,12 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 axios.interceptors.response.use(
     async (response) => {
-        await delay(1000);
+        await delay(10);
         return response;
     },
     (error:AxiosError) => {
-        console.error("Error object:", error); // Log the entire error object
-        //const{data,status} = error.response as AxiosResponse;
+        console.error("Error object:", error); 
+        
         if (error.response) {
             console.error("Server Error:", error.response.data);
             const response = error.response as AxiosResponse
@@ -29,14 +29,13 @@ axios.interceptors.response.use(
                 if (response.data.stackTrace) {
                     const modalStateErrors = response.data.stackTrace.split(',');
             
-                    // Log error messages for debugging
+                   
                     console.log(modalStateErrors);
             
-                    // Throw errors so that they can be caught and handled upstream.
+                  
                     throw modalStateErrors.flat();
                 } else {
-                   // toast.error(response.data);
-                    // Optionally log or throw the error as well
+                  
                     console.error('Error 400 without stackTrace:', response.data);
                     throw new Error('Error 400 without stackTrace');
                 }
@@ -49,13 +48,13 @@ axios.interceptors.response.use(
                     break;
                 case 404:
                     //toast.error("Resource not found.");
-                    router.navigate('not-found'); // Ensure this route exists in your router
+                    router.navigate('not-found'); 
                     break;
                 default:
                   //  toast.error("An unexpected server error occurred.");
             }
         } else {
-            console.error("Error Message:", error.message); // Log a generic error message
+            console.error("Error Message:", error.message); 
             toast.error("An error occurred.");
         }
         
@@ -83,11 +82,10 @@ const Activities = {
     details: (id: string): Promise<Activity> => requests.get(`/Activity/${id}`), 
     create: (activity: Activity) => 
     requests.post('/Activity/Create', activity).catch((error) => {
-        // Handle error here
+       
         console.error("api call: ", error);
 
-        // If you need to propagate the error upstream 
-        // to handle it in another place, re-throw it
+        
         throw error;
     }),
     edit: (activity: Activity) => requests.put('/Activity/Edit', activity), 

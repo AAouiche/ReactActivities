@@ -11,7 +11,7 @@ class ActivityStore {
     activityMap = new Map<string, Activity>();
     selectedActivity: Activity | undefined = undefined;
     editMode = false;
-    loading: boolean = true;
+    loading: boolean = false;
     loadingInitial: boolean = false;
     errors: string[] = [];
     currentFilter: "all" | "going" | "hosting" = "all";
@@ -47,7 +47,7 @@ class ActivityStore {
             console.error("Failed to load activities", error);
         } finally {
             runInAction(() =>{
-                this.setLoading(false);
+                this.loading = false;
             })
             
         }

@@ -11,6 +11,7 @@ import Debug from "../Debug/Debug";
 import Register from "../Authentication/Register";
 import PrivateRoute from "./ProtectedRoutes";
 import ProfileImageUpload from "../form/ProfileImageUpload";
+import UserProfile from "../../features/Profile/UserProfile";
 
 export const routes: RouteObject[] = [
     {
@@ -29,7 +30,8 @@ export const routes: RouteObject[] = [
                     { path: 'createActivity', element: <ActivityForm key='create' /> },
                     { path: 'editActivity/:id', element: <ActivityForm key='edit' /> },
                     { path: 'error', element: <TestErrors /> },
-                    { path: 'debug', element: <Debug /> }
+                    { path: 'debug', element: <Debug /> },
+                    { path: 'profile', element: <UserProfile /> }
                 ]
             },
             { path: 'not-found', element: <NotFound /> },

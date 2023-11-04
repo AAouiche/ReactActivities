@@ -3,7 +3,7 @@ import { User } from "../models/user";
 import { form } from "../models/form";
 import agent from "../api/agent";
 import axios from "axios";
-import { useStore } from "./rootStore";
+import { rootStore, useStore } from "./rootStore";
 
 
 export default class UserStore{
@@ -28,6 +28,7 @@ export default class UserStore{
            ;
            this.initializeUser();
     }
+    
     get loggedIn(){
 
         return this.user;
@@ -39,7 +40,7 @@ export default class UserStore{
           this.isLoggedIn = true;
           console.log('Logged in user object:', user);
   
-          // Assuming user.token holds the JWT token
+         
           if (user.token) {
               this.setToken(user.token);
               
@@ -62,7 +63,7 @@ export default class UserStore{
         }
     }
 
-    // Call this method in your component's useEffect to ensure the token is set after page refreshes
+ 
     loadTokenFromStorage = () => {
         const token = localStorage.getItem('userToken') ;
         if (token) {
@@ -74,10 +75,10 @@ export default class UserStore{
         try {
           const userToken = localStorage.getItem('userToken');
           if (userToken) {
-            // Set the Authorization header with the token
+           
             axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
             
-            // Fetch user details with the token
+          
             const loggedInUser = await agent.Account.LoggedIn();
             console.log('Got user details:', loggedInUser);
             runInAction(() => {
@@ -87,10 +88,15 @@ export default class UserStore{
               this.isLoggedIn = true;
               this.loading = false;
             });
+          }else{
+            runInAction(() => {
+              
+              this.loading = false;
+            });
           }
         } catch (error) {
           console.error('Failed to initialize user:', error);
-          // Handle the error, possibly by setting `this.isLoggedIn` to `false`
+          
           runInAction(() => {
             this.isLoggedIn = false;
             this.loading = false;
@@ -108,25 +114,29 @@ export default class UserStore{
       }
       uploadProfileImage = async (imageFile: any) => {
         try {
-            this.loading = true;
+            //this.loading = true;
             console.log(imageFile);
-            const formData = new FormData();
-formData.append('imageFile', imageFile);  // 'imageFile' should match the parameter name in your controller
-
-const response = await agent.Image.upload(formData);
     
+            const formData = new FormData();
+            formData.append('imageFile', imageFile);  
+    
+            const response = await agent.Image.upload(formData);
+            
             runInAction(() => {
-                // Handle success, you might want to update the user's profile image link in the store.
-                // For example, assuming the response contains the URL of the uploaded image:
-                // this.user.profileImageUrl = response.imageUrl;
+              console.log(this.user?.imageUrl);
+                  
+                    this.user!.imageUrl = response.url; 
+                    rootStore.activityStore.activityMap;
+                
+                console.log(this.user?.imageUrl);
+                
             });
         } catch (error) {
             console.error("Error uploading image:", error);
-            // Handle the error as you see fit. You might want to show a notification to the user.
-        } finally {
-            runInAction(() => {
-                this.loading = false;
-            });
+            
+        } finally{
+          console.log("final",this.user?.imageUrl);
         }
+        
     }
 }
