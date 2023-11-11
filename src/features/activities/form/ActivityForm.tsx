@@ -24,7 +24,7 @@ export default function ActivityForm() {
   const today = new Date();
  
   const [activity, setActivity] = useState<Activity>({
-    id: undefined,
+    id: "",
     title: "",
     description: "",
     date: new Date(currentDate),
@@ -38,24 +38,27 @@ export default function ActivityForm() {
     description: Yup.string().required('Description is required'),
     date: Yup.date()
           .min(today, 'Date must be in the future')
-          .required('Date is required')
-          .nullable(),
+          .required('Date is required'),
+          
     city: Yup.string().required('City is required'),
     category: Yup.string().required('Category is required'),
     venue: Yup.string().required('Venue is required')
   });
 
-  // Use useEffect to populate form fields when editing
+  
   useEffect(() => {
     if (id) {
       const activityToEdit = activityStore.getActivity(id);
+      console.log("activitytoedit ",activityToEdit)
       if (activityToEdit) {
+        console.log("beforeset ",activity)
         setActivity(activityToEdit);
+        console.log("afterset ",activity)
       } else {
         setErrors(['The activity you are trying to edit cannot be found.']);
       }
     }
-    //setErrors( ["An unexpected error occurred."]);
+    
     console.log("errors: ", errors);
   }, [id, activityStore,errors]);
 
@@ -69,7 +72,7 @@ export default function ActivityForm() {
 const handleSubmit = async (values:Activity) => {
   try {
     activityStore.setErrors([]);
-    if (!values.id) {
+    if (values.id == "") {
       const createdActivity = await activityStore.createActivity(values);
       //navigate(`/activity/${createdActivity.id}`);
     } else {
@@ -77,8 +80,8 @@ const handleSubmit = async (values:Activity) => {
       navigate(`/activity/${values.id}`);
     }
   } catch (error:any) {
-    const response = error; // You might want to extract some info from error response
-    activityStore.setErrors([error]); // Also, consider adding relevant error handling
+    const response = error; 
+    activityStore.setErrors([error]);
   }
 };
 // const handleSubmit = async (e: React.FormEvent<HTMLFormElement| HTMLTextAreaElement>) => {
@@ -94,16 +97,13 @@ const handleSubmit = async (values:Activity) => {
 
   return (
     <>
-    {id! ? (
-      <>
-        <p>test</p>
-      </>
-    ) : null}
-    <Segment>
+    
+    <Segment padded="very">
 
       <Formik 
       validationSchema={activityValidationSchema} 
       initialValues={activity} 
+      enableReinitialize 
       onSubmit={handleSubmit}>
         {({handleSubmit}) =>(
            <Form className="ui form" onSubmit={handleSubmit}>

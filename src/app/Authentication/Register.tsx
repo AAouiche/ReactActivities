@@ -7,6 +7,9 @@ const schema = Yup.object().shape({
     email: Yup.string()
       .required("Email is a required field")
       .email("Invalid email format"),
+      username: Yup.string()
+      .required("Username is a required field")
+      .email("Invalid email format"),
     password: Yup.string()
       .required("Password is a required field")
       .min(8, "Password must be at least 8 characters")
@@ -40,7 +43,7 @@ export default function Register() {
         handleBlur,
         handleSubmit,
       }) => (
-        <div className="register">
+        <div className="login">
           <div className="form">
             <form noValidate onSubmit={handleSubmit}>
               <span>Register</span>

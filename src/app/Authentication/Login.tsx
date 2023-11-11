@@ -23,17 +23,17 @@ export default function Login() {
   const navigate = useNavigate();
   return (
     <>
-      {/* Wrapping form inside formik tag and passing our schema to validationSchema prop */}
+    
       <Formik
         validationSchema={schema}
         initialValues={{ email: "", password: "" }}
         onSubmit={async (values) => {
           try {
-              await userStore.login(values); // awaiting the asynchronous login action
+              await userStore.login(values); 
               navigate('/activities');
               console.log('Logged in', values);
           } catch (error) {
-              console.error('Login failed', error); // handling error, if login fails
+              console.error('Login failed', error); 
           }
       }}
       >
@@ -47,10 +47,10 @@ export default function Login() {
         }) => (
           <div className="login">
             <div className="form">
-           {/* Passing handleSubmit parameter tohtml form onSubmit property */}
+           
               <form noValidate onSubmit={handleSubmit}>
                 <span>Login</span>
-              {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
+              
                 <input
                   type="email"
                   name="email"
@@ -61,11 +61,11 @@ export default function Login() {
                   className="form-control inp_text"
                   id="email"
                 />
-                {/* If validation is not passed show errors */}
+               
                 <p className="error">
                   {errors.email && touched.email && errors.email}
                 </p>
-                 {/* Our input html with passing formik parameters like handleChange, values, handleBlur to input properties */}
+               
                 <input
                   type="password"
                   name="password"
@@ -75,18 +75,18 @@ export default function Login() {
                   placeholder="Enter password"
                   className="form-control"
                 />
-                 {/* If validation is not passed show errors */}
+               
                 <p className="error">
                   {errors.password && touched.password && errors.password}
                 </p>
-                {/* Click on submit button to submit the form */}
+              
                 <button type="submit">Login</button>
               </form>
             </div>
           </div>
         )}
       </Formik>
-      <Debug/>
+      
     </>
   );
 }

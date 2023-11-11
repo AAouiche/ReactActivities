@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { List, Image, Popup } from "semantic-ui-react";
 import { Attendee } from "../../../app/models/attendee";
 import { useStore } from "../../../app/Stores/rootStore";
@@ -17,9 +17,7 @@ interface Props{
 function ListAttendee({attendee}:Props){
     const { activityStore } = useStore();
 
-    useEffect(() => {
-        
-    }, []); 
+   
 return(
     <List horizontal>
             {attendee.map(att => (

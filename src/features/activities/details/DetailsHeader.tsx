@@ -5,6 +5,7 @@ import {Activity} from "../../../app/models/activity";
 import { format } from 'date-fns';
 import { Attendee } from '../../../app/models/attendee';
 import { useStore } from '../../../app/Stores/rootStore';
+import { Link } from 'react-router-dom';
 
 
 
@@ -32,14 +33,14 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
                 <Image src={`/assets/categoryImages/${activity.category}.jpg`} fluid style={activityImageStyle}/>
-                <Segment style={activityImageTextStyle} basic>
+                <Segment >
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
                                     content={activity.title}
-                                    style={{color: 'white'}}
+                                    
                                 />
                                 <p>{format(activity.date!, 'yyyy-MM-dd HH:mm')}</p>
                                 <p>
@@ -52,7 +53,7 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
             </Segment>
             <Segment clearing attached='bottom'>
                 {activity.hosting ? (
-                    <Button  color='orange' floated='right'>
+                    <Button as={Link} to={`/editActivity/${activity.id}`} color='orange' floated='right'>
                         Manage Event
                     </Button>
                 ) : activity.going ? (

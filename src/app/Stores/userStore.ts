@@ -4,6 +4,7 @@ import { form } from "../models/form";
 import agent from "../api/agent";
 import axios from "axios";
 import { rootStore, useStore } from "./rootStore";
+import { EditUser } from "../models/editUser";
 
 
 export default class UserStore{
@@ -19,6 +20,7 @@ export default class UserStore{
             token => {
               if(token) {
                 localStorage.setItem('userToken',token)
+
               }else {
                 localStorage.removeItem('userToken');
               }
@@ -26,7 +28,11 @@ export default class UserStore{
             
            )
            ;
-           this.initializeUser();
+           if(this.token){
+            console.log(this.token);
+            this.initializeUser();
+           }
+           
     }
     
     get loggedIn(){
@@ -50,7 +56,25 @@ export default class UserStore{
     register = async (submission:form)=>{
         await agent.Account.register(submission);
     }
-    
+    editUser = async(submission:EditUser)=>{
+      this.loading = true
+      try{
+        const editedUser = await agent.Account.edit(submission);
+        
+        runInAction(() => {
+           this.user!.biography = editedUser.biography;
+           this.user!.displayName = editedUser.displayName;
+           this.user!.email = editedUser.email;
+        })
+
+      }catch(error){
+        console.error("Failed to edit user", error);
+      }finally{
+        runInAction(() =>{
+          this.loading = false;
+        })
+      }
+    }
 
     setToken = (token:string | null) => {
         if (token) {
@@ -73,8 +97,11 @@ export default class UserStore{
     initializeUser = async () => {
       this.loading = true;
         try {
+          
           const userToken = localStorage.getItem('userToken');
           if (userToken) {
+            const validation = await agent.Account.validateToken(userToken);
+            console.log(validation);
            
             axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
             
@@ -100,6 +127,7 @@ export default class UserStore{
           runInAction(() => {
             this.isLoggedIn = false;
             this.loading = false;
+            localStorage.clear();
           });
         }
       }
@@ -125,8 +153,8 @@ export default class UserStore{
             runInAction(() => {
               console.log(this.user?.imageUrl);
                   
-                    this.user!.imageUrl = response.url; 
-                    rootStore.activityStore.activityMap;
+                    //this.user!.imageUrl = response.url; 
+                  rootStore.activityStore.activityMap;
                 
                 console.log(this.user?.imageUrl);
                 
@@ -138,5 +166,17 @@ export default class UserStore{
           console.log("final",this.user?.imageUrl);
         }
         
+    }
+    setImage(image:string){
+        if(image){
+          this.user!.imageUrl = image;
+          rootStore.activityStore.activityMap.forEach((activity, activityId) => {
+            if(activity.host?.username === this.user!.userName) { 
+                activity.host!.imageUrl = image; 
+                console.log(activity.host);
+            }
+            
+        });
+        }
     }
 }

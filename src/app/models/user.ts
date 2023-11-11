@@ -3,4 +3,6 @@ export interface User{
     token:string;
     userName:string;
     imageUrl:string;
+    email:string;
+    biography?:string;
 }

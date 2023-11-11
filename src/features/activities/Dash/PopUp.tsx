@@ -8,6 +8,7 @@ interface Props {
 function AttendeePopup ({ attendee }:Props)  {
     return (
         <div>
+            
             <h4>{attendee.displayName}</h4>
             <p>Username: {attendee.username}</p>
             {attendee.bio && <p>Bio: {attendee.bio}</p>}

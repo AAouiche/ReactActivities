@@ -27,7 +27,7 @@ function ListItem({activity}: Props){
         const isConfirmed = window.confirm("Are you sure you want to delete this activity?");
     
         if (!isConfirmed) {
-            return; // Exit function if user selects "Cancel" in the confirmation dialog
+            return; 
         }
     
         try {

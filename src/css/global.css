@@ -1,6 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
 body {
-  background-color: grey;
+  min-height: 100%; /* Ensure the body has at least the height of the viewport */
+  margin: 0; /* Reset default margin */
+  /* background-color: grey; */
+  background-image: linear-gradient(
+    135deg,
+    #000033 0%, /* Deep navy */
+    #004080 50%, /* Rich blue */
+    #007399 100% /* Dark cyan */
+  );
+  background-attachment: fixed; /* This will make the background fixed during scroll */
+  background-repeat: no-repeat; /* Prevent the background from repeating */
+  background-size: cover; /* Ensure the background covers the entire element */
+}
+html {
+  height: 100%; 
 }
 .react-calendar{
   width: 100%!important;
@@ -12,11 +26,11 @@ body {
   display: flex;
   align-items: center;
   background-image: linear-gradient(
-          135deg,
-          rgb(24, 42, 115) 0%,
-          rgb(33, 138, 174) 69%,
-          rgb(32, 167, 172) 89%
-  ) !important;
+    135deg,
+    #000033 0%, /* Deep navy */
+    #004080 50%, /* Rich blue */
+    #007399 100% /* Dark cyan */
+  );
   height: 100vh;
   text-align: center;
 }
@@ -42,73 +56,152 @@ body {
   display: block;
 }
 .login {
-width: 360px;
-padding: 8% 0 0;
+  
+ 
+padding: 4% 0 0;
 margin: auto;
 font-family: 'Comfortaa', cursive;
 }
-
-.form {
-position: relative;
-z-index: 1;
-background: #FFFFFF;
-border-radius: 10px;
-max-width: 360px;
-margin: 0 auto 100px;
-padding: 45px;
-text-align: center;
+.react-datepicker-wrapper{
+  width: 100%;
 }
 
-.form input {
-outline: 0;
-background: #f2f2f2;
-width: 100%;
-border: 0;
-border-radius: 5px;
-margin: 0 0 15px;
-padding: 15px;
-box-sizing: border-box;
-font-size: 14px;
-font-family: 'Comfortaa', cursive;
+.login .form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  border-radius: 10px;
+  max-width: 1000px;
+  
+  margin: 0 auto;
+  padding: 30px;
+  text-align: center;
 }
 
-.form input:focus {
-background: #dbdbdb;
+.login .form input {
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  border-radius: 5px;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-family: 'Comfortaa', cursive;
 }
 
-.form button {
-font-family: 'Comfortaa', cursive;
-text-transform: uppercase;
-outline: 0;
-background: #4b6cb7;
-width: 100%;
-border: 0;
-border-radius: 5px;
-padding: 15px;
-color: #FFFFFF;
-font-size: 14px;
--webkit-transition: all 0.3 ease;
-transition: all 0.3 ease;
-cursor: pointer;
+.login .form input:focus {
+  background: #dbdbdb;
 }
 
-.form button:active {
-background: #395591;
+.login .form button {
+  font-family: 'Comfortaa', cursive;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4b6cb7;
+  width: 100%;
+  border: 0;
+  border-radius: 5px;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.form span {
-font-size: 40px;
-color: #4b6cb7;
-margin-bottom: 25px;
-display: block;
+.login .form button:active {
+  background: #395591;
 }
 
-.form p.error {
-margin: 0 0 10px 10px;
-text-align: left;
-font-size: 10px;
-color: red;
+.login .form span {
+  font-size: 40px;
+  color: #4b6cb7;
+  margin-bottom: 25px;
+  display: block;
+}
+
+.login .form p.error {
+  margin: 0 0 10px;
+  text-align: left;
+  font-size: 10px;
+  color: red;
 }
 .ui.comments {
-  max-width: 950px; /* replace 'desired-value' with the width you want, e.g., 800px, 100%, etc. */
+  max-width: 950px; 
+}
+.image-wrapper {
+  display: inline-block; /* Make the wrapper a block-level element */
+  margin-left: auto;
+  margin-right: auto; /* These auto margins center the block */
+  position: relative;
+  cursor: pointer;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+  font-size: 24px;
+  visibility: hidden;
+  pointer-events: none; /* Add this to make sure the click passes through to the input */
+}
+
+.image-wrapper:hover .image-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+.ui.segment {
+  background-color: #2a3f54; /* Darker than the background, but lighter than the deepest color */
+  color: #d1e8ff; /* Lighter text for better readability on the dark background */
+  border: none; /* Optional: removes border */
+}
+
+/* For segments that need to stand out more, use a secondary color */
+.ui.segment.secondary {
+  background-color: #3d556e;
+  color: #a7c0d9;
+}
+
+/* Clearing segments often contain actions, they may need different styling */
+.ui.segment.clearing {
+  background-color: #2a3f54; /* Same as general segment to maintain consistency */
+  color: #d1e8ff;
+  padding: 1em; /* Add padding if necessary */
+}
+
+/* You might want to style the icons to match */
+.ui.icon {
+  color: #a7c0d9;
+}
+
+/* Buttons within the segments should also match the theme */
+.ui.button {
+  background-color: #415a77; /* A lighter shade for visibility */
+  color: #ffffff;
+  border: none; /* Optional: removes border */
+}
+
+.ui.button:hover {
+  background-color: #2a3f54; /* Darker shade on hover */
+}
+
+
+
+
+
+
+
+
+
+
+
+.ui.segment.attached {
+  background-color: #2a3f54; /* A dark background that fits the theme */
+  color: white; /* Making the text color white for readability */
+  border: none;
 }

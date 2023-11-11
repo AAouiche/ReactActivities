@@ -7,10 +7,10 @@ import { observer } from 'mobx-react-lite';
  function Filter() {
     const { activityStore } = useStore();
 
-    // Local state to force re-render
+    
     const [currentFilter, setCurrentFilter] = useState(activityStore.currentFilter);
 
-    // Function to handle the filter click
+    
     const handleFilterClick = (filter:any) => {
         activityStore.setFilter(filter);
         setCurrentFilter(filter);  

@@ -12,14 +12,22 @@ import Register from "../Authentication/Register";
 import PrivateRoute from "./ProtectedRoutes";
 import ProfileImageUpload from "../form/ProfileImageUpload";
 import UserProfile from "../../features/Profile/UserProfile";
+import PublicRoute from "./PublicRoutes";
 
 export const routes: RouteObject[] = [
     {
         path: '/',
         element: <App/>,
         children: [
-            { path: 'login', element: <Login /> },
-            { path: 'register', element: <Register /> },
+            {
+                path: '/',
+                element: <PublicRoute/>,
+                children: [
+                   
+                    { path: 'login', element: <Login /> },
+                    { path: 'register', element: <Register /> }
+                ]
+            },
             {
                 path: '/',
                 element: <PrivateRoute/>,

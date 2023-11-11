@@ -16,9 +16,12 @@ export const CustomDate: React.FC<Partial<ReactDatePickerProps>> = ({  ...props 
       selected={(field.value && new Date(field.value)) || null}
       onChange={value => helpers.setValue(value)}/>
       {meta.touched && meta.error ? (
-        <Label basic color='red' pointing>
-          {meta.error}
-        </Label>
+        <Label basic color="red"  pointing
+       
+
+        >
+        {meta.error}
+      </Label>
       ) : null}
     </Form.Field>
   );

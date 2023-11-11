@@ -1,5 +1,5 @@
 import { Formik,  Field, ErrorMessage } from 'formik';
-import { Segment,Image, Header ,Form, Button, Input} from 'semantic-ui-react';
+import { Segment,Image, Header ,Form, Button, Input, Icon} from 'semantic-ui-react';
 import * as Yup from 'yup';
 import { CustomTextInput } from '../../app/form/customTextInput';
 import { useStore } from '../../app/Stores/rootStore';
@@ -10,6 +10,7 @@ import { autorun } from 'mobx';
 const UserProfile = () => {
     const { userStore } = useStore();
     const profilePicture = userStore.user?.imageUrl;
+    var user = userStore.user;
     const [selectedImage, setSelectedImage] = useState(profilePicture);
     const handleImageChange = (e: any) => {
         console.log("start",performance.now());
@@ -33,6 +34,7 @@ const UserProfile = () => {
                     //console.log("Before setSelectedImage call", selectedImage);
                    // setSelectedImage(event.target.result);
                     //console.log("After setSelectedImage call", selectedImage);
+                    userStore.setImage(event.target.result);
                     userStore.uploadProfileImage(file);
                     // console.log("File selected:", file);
                     // console.log("Reader loaded:", event.target.result);
@@ -51,44 +53,45 @@ const UserProfile = () => {
           console.log('Image URL changed:', userStore.user?.imageUrl);
         });
     
-        return () => disposer(); // This will dispose of the autorun when the component unmounts
+        return () => disposer(); 
       }, []);
 
     return (
-        <Segment>
-            <label style={{ cursor: 'pointer' }}>
-                <Image src={userStore.user?.imageUrl || '/assets/user.png'} size='small' circular centered />
-                <input type="file" hidden onChange={handleImageChange} />
+        <Segment textAlign="center" style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto' }}>
+            <label className="image-wrapper">
+            <Image src={userStore.user?.imageUrl || '/assets/user.png'} size='small' circular centered />
+            <div className="image-overlay">
+            <Icon name="write" />
+            </div>
+            <input type="file" hidden onChange={handleImageChange} />
             </label>
             
             <Header as='h2' textAlign='center'>Edit Profile</Header>
 
             <Formik
                 initialValues={{
-                    name: 'John Doe',
-                    bio: 'Web Developer. Loves coding and exploring new technologies. Passionate about creating innovative solutions.'
+                    email: user?.email || '', 
+                    displayName: user?.displayName || '',
+                    biography: user?.biography || '',
                 }}
                 validationSchema={Yup.object({
-                    name: Yup.string()
-                             .max(50, 'Must be 50 characters or less')
-                             .required('Required'),
-                    bio: Yup.string()
-                            .max(200, 'Must be 200 characters or less'),
+                    email: Yup.string().email('Invalid email address').required('Required'), 
+                    displayName: Yup.string().max(50, 'Must be 50 characters or less').required('Required'),
+                    biography: Yup.string().max(200, 'Must be 200 characters or less'),
                 })}
                 onSubmit={(values) => {
-                    console.log(values);
+                    userStore.editUser(values);
+                    console.log("valueessssssss",values);
+                    console.log("valueessssssss");
                 }}
             >
-                {() => (
-                    <Form>
-                        <Form.Field>
-                            <label>Name</label>
-                            <Field name="name" placeholder="Name" as={Input} />
-                            
-                        </Form.Field>
-                        <CustomTextInput name='DisplayName' label='DisplayName' placeholder='DisplayName'/>
+                {(Props) => (
+                    <Form onSubmit={Props.handleSubmit}>
                         
-                        <CustomTextInput name='Bio' label='Bio' placeholder='Bio'/>
+                        <CustomTextInput name='email' label='Email' placeholder='Email'/>
+                        <CustomTextInput name='displayName' label='DisplayName' placeholder='DisplayName'/>
+                        
+                        <CustomTextInput name='biography' label='biography' placeholder='Biography'/>
 
                         <Button type="submit">Update Profile</Button>
                     </Form>

@@ -6,7 +6,7 @@ import NavBar from './NavBar';
 import { StoreContext, useStore } from '../Stores/rootStore';
 import LoadingComponent from './LoadingComponent';
 import {  observer } from 'mobx-react-lite';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import { ToastContainer } from 'react-toastify';
 
@@ -30,6 +30,10 @@ function App() {
     
     
     if (activityStore.loading || userStore.loading ) return <LoadingComponent content='Loading app...' />
+
+    if (userStore.isLoggedIn && location.pathname === '/') {
+        return <Navigate to="/activities" />;
+    }
 
     return (
         <>

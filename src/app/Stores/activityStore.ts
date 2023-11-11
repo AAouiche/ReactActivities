@@ -18,7 +18,10 @@ class ActivityStore {
     selectedDate: Date | null = null; 
     
    
-
+     // Pagination properties
+     totalCount = 0;
+     pageSize = 5;
+     currentPage = 1;
    
 
     constructor() {
@@ -28,30 +31,32 @@ class ActivityStore {
     
 
     loadActivities = async () => {
+    try {
+        this.loading = true;
+        const response = await agent.Activities.list(this.currentPage, this.pageSize);
+        const { items, metadata } = response;
         
-        try {
-            this.loading = true;
-            const activities = await agent.Activities.list();
-            console.log(activities);      
-             runInAction(() => {
-                this.loading = false;
-                 activities.forEach(activity => {
-                  
-                   this.setActivity(activity);
-                });
+        runInAction(() => {
+            this.activityMap.clear(); 
+            items.forEach(activity => {
+                this.setActivity(activity);
             });
-            console.log("loadactivities");
-            console.log(this.activityMap);
-
-        } catch (error) {
-            console.error("Failed to load activities", error);
-        } finally {
-            runInAction(() =>{
-                this.loading = false;
-            })
-            
-        }
-    };
+            this.totalCount = metadata.totalCount;
+            this.pageSize = metadata.pageSize;
+            this.currentPage = metadata.currentPage;
+            this.loading = false;
+        });
+    } catch (error) {
+        console.error("Failed to load activities", error);
+        runInAction(() => {
+            this.loading = false;
+        });
+    }
+   };   
+   setCurrentPage = (page: number) => {
+    this.currentPage = page;
+    this.loadActivities(); 
+};
 
     createActivity = async (activity: Activity) => {
         this.loading = true;
@@ -203,7 +208,9 @@ class ActivityStore {
         this.selectedActivity = undefined;
     }
     getActivity = (id:string):Activity | undefined =>{
-        return this.activityMap.get(id);
+        var activity = this.activityMap.get(id);
+        console.log("retrieved activity", activity);
+        return activity;
     }
     setActivity = (activity: Activity) => {
         const user = rootStore.userStore.user;
@@ -223,7 +230,7 @@ class ActivityStore {
             this.activityMap.set(activity.id, activity);
         } else {
             console.error("Activity or Activity ID is undefined:", activity);
-            // Handle error as per your use case
+            
         }
     };
     formatDate = (date:Date) =>{

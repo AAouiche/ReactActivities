@@ -5,6 +5,7 @@ import {  useNavigate, useParams } from 'react-router-dom';
 import { router } from "../router/Routes";
 import { User } from "../models/user";
 import { form } from "../models/form";
+import { EditUser } from "../models/editUser";
 
 //const navigate = useNavigate();
 
@@ -13,7 +14,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 axios.interceptors.response.use(
     async (response) => {
-        await delay(10);
+        delay(500);
         return response;
     },
     (error:AxiosError) => {
@@ -78,7 +79,8 @@ const requests = {
 };
 
 const Activities = {
-    list: (): Promise<Activity[]> => requests.get('/Activity/List'),
+    list: (pageNumber: number, pageSize: number): Promise<PaginatedResult<Activity>> => 
+        requests.get(`/Activity/List?pageNumber=${pageNumber}&pageSize=${pageSize}`),
     details: (id: string): Promise<Activity> => requests.get(`/Activity/${id}`), 
     create: (activity: Activity) => 
     requests.post('/Activity/Create', activity).catch((error) => {
@@ -93,9 +95,11 @@ const Activities = {
     attend:(id:string) => requests.post(`/Activity/Attending/${id}`,{})
 }
 const Account ={
-    LoggedIn: ():Promise<User>=>requests.get('/Account/getUser'),
-    login: (user:form) =>requests.post('Account/login',user),
-    register: (user:form) => requests.post('Account/register',user)
+    LoggedIn: ():Promise<User>=> requests.get('/Account/getUser'),
+    login: (user:form) => requests.post('Account/login',user),
+    register: (user:form) => requests.post('Account/register',user),
+    edit: (user:EditUser) => requests.post('Account/Edit',user),
+    validateToken: (token:string) => requests.post('Account/ValidateToken',{ Token: token })
     
 }
 const Image = {

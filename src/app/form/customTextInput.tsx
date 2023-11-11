@@ -10,12 +10,12 @@ interface Props{
 }
 
 export const CustomTextInput: React.FC<Props> = ({ label, ...props }) => {
-  const [field, meta] = useField(props);
+  const [field, meta] = useField(props.name);
 
   return (
     <Form.Field error={meta.touched && !!meta.error}>
       <label>{label}</label>
-      <input {...field} {...props} />
+      <input {...props} {...field} />
       {meta.touched && meta.error ? (
         <Label basic color='red' pointing>
           {meta.error}
