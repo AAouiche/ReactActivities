@@ -5,7 +5,7 @@ import moment from "moment";
 import {  rootStore } from "./rootStore";
 
 
-export class ActivityStore {
+class ActivityStore {
     activities: Activity[] = [];
     activityMap = new Map<string, Activity>();
     selectedActivity: Activity | undefined = undefined;
@@ -287,3 +287,4 @@ export class ActivityStore {
     }
 }
 
+export default ActivityStore;

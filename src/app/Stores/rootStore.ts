@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import {ActivityStore} from "./activityStore";
+import ActivityStore from "./activityStore";
 import UserStore from "./userStore";
 
 import MessageStore from "./messageStore";

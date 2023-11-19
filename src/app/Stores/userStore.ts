@@ -3,7 +3,7 @@ import { User } from "../models/user";
 import { form } from "../models/form";
 import agent from "../api/agent";
 import axios from "axios";
-import { rootStore, useStore } from "./rootStore";
+import { rootStore } from "./rootStore";
 import { EditUser } from "../models/editUser";
 
 
