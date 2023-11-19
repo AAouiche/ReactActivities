@@ -1,11 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { Activity } from "../models/activity";
 import { toast } from "react-toastify";
-import {  useNavigate, useParams } from 'react-router-dom';
+
 import { router } from "../router/Routes";
 import { User } from "../models/user";
 import { form } from "../models/form";
+
 import { EditUser } from "../models/editUser";
+import { PaginatedResult } from "../models/PaginatedResult";
 
 //const navigate = useNavigate();
 

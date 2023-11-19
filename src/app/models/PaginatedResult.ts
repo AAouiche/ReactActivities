@@ -1,4 +1,4 @@
-interface PaginatedResult<T> {
+export interface PaginatedResult<T> {
     items: T[];            
     metadata: PaginationMetadata; 
 }

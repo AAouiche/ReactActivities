@@ -6,7 +6,7 @@ const Debug = observer(() => {
     console.log("DebugComponent re-rendered");
     return (
       <div>
-        Current User: {userStore.user?.username || "Not logged in"}
+        Current User: {userStore.user?.userName || "Not logged in"}
       </div>
     );
   });

@@ -2,11 +2,10 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { Activity } from "../models/activity";
 import agent from "../api/agent";
 import moment from "moment";
-import { Store, rootStore, useStore } from "./rootStore";
-import UserStore from "./userStore";
-import { Root } from "react-dom/client";
+import {  rootStore } from "./rootStore";
 
-class ActivityStore {
+
+export class ActivityStore {
     activities: Activity[] = [];
     activityMap = new Map<string, Activity>();
     selectedActivity: Activity | undefined = undefined;
@@ -31,28 +30,28 @@ class ActivityStore {
     
 
     loadActivities = async () => {
-    try {
-        this.loading = true;
-        const response = await agent.Activities.list(this.currentPage, this.pageSize);
-        const { items, metadata } = response;
-        
-        runInAction(() => {
-            this.activityMap.clear(); 
-            items.forEach(activity => {
-                this.setActivity(activity);
+        try {
+            this.loading = true;
+            const response = await agent.Activities.list(this.currentPage, this.pageSize);
+            const { items, metadata } = response;
+            
+            runInAction(() => {
+                this.activityMap.clear(); 
+                items.forEach((activity: Activity) => {
+                    this.setActivity(activity);
+                });
+                this.totalCount = metadata.totalCount;
+                this.pageSize = metadata.pageSize;
+                this.currentPage = metadata.currentPage;
+                this.loading = false;
             });
-            this.totalCount = metadata.totalCount;
-            this.pageSize = metadata.pageSize;
-            this.currentPage = metadata.currentPage;
-            this.loading = false;
-        });
-    } catch (error) {
-        console.error("Failed to load activities", error);
-        runInAction(() => {
-            this.loading = false;
-        });
-    }
-   };   
+        } catch (error) {
+            console.error("Failed to load activities", error);
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    };
    setCurrentPage = (page: number) => {
     this.currentPage = page;
     this.loadActivities(); 
@@ -64,7 +63,7 @@ class ActivityStore {
 
         
         try {
-            // Use manual activity instead of the passed one
+            
             console.log('Sending activity to API:', activity );
             //console.log('Sending manual activity to API:', manualActivity );
             const createdActivity = await agent.Activities.create(activity);
@@ -166,14 +165,14 @@ class ActivityStore {
             await agent.Activities.attend(this.selectedActivity!.id!);
             runInAction(() => {
                 if (this.selectedActivity) {
-                    // Toggle attendance status
+                    
                     const attendee = this.selectedActivity.attendees?.find(a => a.username === user.userName);
                     if (attendee) {
-                        // User is already attending, so remove them
+                        
                         this.selectedActivity.attendees = this.selectedActivity.attendees?.filter(a => a.username !== user.userName);
                         this.selectedActivity.going = false;
                     } else {
-                        // User is not attending, so add them
+                        
                         if (!this.selectedActivity.attendees) {
                             this.selectedActivity.attendees = [];
                         }
@@ -288,4 +287,3 @@ class ActivityStore {
     }
 }
 
-export default ActivityStore;

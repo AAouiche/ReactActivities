@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import NavBar from './NavBar';
- import '../../css/App.css';
+
 
 import { StoreContext, useStore } from '../Stores/rootStore';
 import LoadingComponent from './LoadingComponent';
