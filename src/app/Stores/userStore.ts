@@ -54,7 +54,22 @@ export default class UserStore{
       });
   };
     register = async (submission:form)=>{
+      try {
+        
         await agent.Account.register(submission);
+
+        
+        const loginSubmission = {
+            email: submission.email,
+            password: submission.password
+        };
+
+        
+        await this.login(loginSubmission);
+    } catch (error) {
+        console.error('Registration failed:', error);
+       
+    }
     }
     editUser = async(submission:EditUser)=>{
       this.loading = true

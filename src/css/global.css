@@ -1,17 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
 body {
-  min-height: 100%; /* Ensure the body has at least the height of the viewport */
-  margin: 0; /* Reset default margin */
-  /* background-color: grey; */
+  min-height: 100%; 
+  margin: 0; 
   background-image: linear-gradient(
     135deg,
-    #000033 0%, /* Deep navy */
-    #004080 50%, /* Rich blue */
-    #007399 100% /* Dark cyan */
+    #000033 0%, 
+    #004080 50%,
+    #007399 100% 
   );
-  background-attachment: fixed; /* This will make the background fixed during scroll */
-  background-repeat: no-repeat; /* Prevent the background from repeating */
-  background-size: cover; /* Ensure the background covers the entire element */
+  background-attachment: fixed; 
+  background-repeat: no-repeat; 
+  background-size: cover;
 }
 html {
   height: 100%; 
@@ -27,9 +26,9 @@ html {
   align-items: center;
   background-image: linear-gradient(
     135deg,
-    #000033 0%, /* Deep navy */
-    #004080 50%, /* Rich blue */
-    #007399 100% /* Dark cyan */
+    #000033 0%, 
+    #004080 50%,
+    #007399 100%
   );
   height: 100vh;
   text-align: center;
@@ -131,9 +130,9 @@ font-family: 'Comfortaa', cursive;
   max-width: 950px; 
 }
 .image-wrapper {
-  display: inline-block; /* Make the wrapper a block-level element */
+  display: inline-block; 
   margin-left: auto;
-  margin-right: auto; /* These auto margins center the block */
+  margin-right: auto;
   position: relative;
   cursor: pointer;
 }
@@ -148,7 +147,7 @@ font-family: 'Comfortaa', cursive;
   color: white;
   font-size: 24px;
   visibility: hidden;
-  pointer-events: none; /* Add this to make sure the click passes through to the input */
+  pointer-events: none;
 }
 
 .image-wrapper:hover .image-overlay {
@@ -156,40 +155,51 @@ font-family: 'Comfortaa', cursive;
   visibility: visible;
 }
 .ui.segment {
-  background-color: #2a3f54; /* Darker than the background, but lighter than the deepest color */
-  color: #d1e8ff; /* Lighter text for better readability on the dark background */
-  border: none; /* Optional: removes border */
+  background-color: #2a3f54; 
+  color: #d1e8ff; 
+  border: none; 
 }
 
-/* For segments that need to stand out more, use a secondary color */
+
 .ui.segment.secondary {
   background-color: #3d556e;
   color: #a7c0d9;
 }
 
-/* Clearing segments often contain actions, they may need different styling */
+
 .ui.segment.clearing {
-  background-color: #2a3f54; /* Same as general segment to maintain consistency */
+  background-color: #2a3f54; 
   color: #d1e8ff;
-  padding: 1em; /* Add padding if necessary */
+  padding: 1em; 
 }
 
-/* You might want to style the icons to match */
+
 .ui.icon {
   color: #a7c0d9;
 }
 
-/* Buttons within the segments should also match the theme */
+
 .ui.button {
-  background-color: #415a77; /* A lighter shade for visibility */
+  background-color: #415a77;
   color: #ffffff;
-  border: none; /* Optional: removes border */
+  border: none; 
 }
 
 .ui.button:hover {
-  background-color: #2a3f54; /* Darker shade on hover */
+  background-color: #2a3f54; 
 }
 
+
+
+.action-link a {
+  color: #0000EE; 
+  text-decoration: none; /* Removes underline from link */
+}
+
+.action-link a:hover {
+  text-decoration: underline; /* Adds underline on hover */
+  color: #FF4500; 
+}
 
 
 

@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from "react";
-import { Button, Header, Item, Label, Segment } from "semantic-ui-react";
+import { Button, Header, Icon, Item, Label, Message, Segment } from "semantic-ui-react";
 
 import { Activity } from "../../../app/models/activity";
 import { useStore } from "../../../app/Stores/rootStore";
@@ -10,9 +10,7 @@ import ListItem from "./ListItem";
 
 function ActivityList() {
     const { activityStore } = useStore();
-    const { groupActivitiesByDate, currentPage, totalCount, pageSize, setCurrentPage } = activityStore;
-
-    const totalPages = Math.ceil(totalCount / pageSize);
+    const { activityByDate, currentPage, totalPages, setCurrentPage } = activityStore;
 
     const handlePreviousPage = () => {
         if (currentPage > 1) {
@@ -25,29 +23,28 @@ function ActivityList() {
             setCurrentPage(currentPage + 1);
         }
     };
-    function handleDelete(id:string){
-        try{
-            activityStore.deleteActivity(id);
-        }catch(error){
-            console.error("Error:", error);
-        }
-       
-    };
+
+    if (activityByDate.length === 0) {
+        return (
+            <Segment placeholder>
+                <Header icon>
+                    <Icon name='search' />
+                    No activities found.
+                </Header>
+            </Segment>
+        );
+    }
 
     return (
         <>
-            {groupActivitiesByDate.map(([group, activities]) => (
-                <Fragment key={group}>
-                    <Header color='blue'>{group}</Header>
-                    {activities.map(activity => (
-                        <ListItem key={activity.id} activity={activity} />
-                    ))}
-                </Fragment>
-                
+             <Message info>
+                <Message.Header>Public Activities</Message.Header>
+                <p>All activities listed here are public and visible to all users.</p>
+            </Message>
+            {activityByDate.map(activity => (
+                <ListItem key={activity.id} activity={activity} />
             ))}
             
-
-            {/* Pagination Controls */}
             <div style={{ marginTop: '20px', textAlign: 'center' }}>
                 <Button onClick={handlePreviousPage} disabled={currentPage <= 1}>
                     Previous
@@ -62,5 +59,7 @@ function ActivityList() {
         </>
     );
 }
+
+
 
 export default observer(ActivityList);

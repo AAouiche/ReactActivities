@@ -81,8 +81,8 @@ const requests = {
 };
 
 const Activities = {
-    list: (pageNumber: number, pageSize: number): Promise<PaginatedResult<Activity>> => 
-        requests.get(`/Activity/List?pageNumber=${pageNumber}&pageSize=${pageSize}`),
+    list: (pageNumber:number, pageSize:number, filter = 'all', selectedDate: Date | null = null) => 
+        requests.get(`/Activity/List?pageNumber=${pageNumber}&pageSize=${pageSize}&filter=${filter}&selectedDate=${selectedDate ? selectedDate.toISOString() : ''}`),
     details: (id: string): Promise<Activity> => requests.get(`/Activity/${id}`), 
     create: (activity: Activity) => 
     requests.post('/Activity/Create', activity).catch((error) => {

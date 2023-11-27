@@ -56,6 +56,7 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
                     <Button as={Link} to={`/editActivity/${activity.id}`} color='orange' floated='right'>
                         Manage Event
                     </Button>
+
                 ) : activity.going ? (
                     <Button onClick={activityStore.changeAttendance} >Cancel attendance</Button>
                 ) : (

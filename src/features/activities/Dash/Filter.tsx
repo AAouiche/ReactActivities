@@ -17,7 +17,7 @@ import { observer } from 'mobx-react-lite';
     };
 
     const handleDateChange = (value: any, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        activityStore.selectedDate = value;
+        activityStore.setDate(value);
     };
 
     return (

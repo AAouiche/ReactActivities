@@ -10,7 +10,7 @@ function AttendeePopup ({ attendee }:Props)  {
         <div>
             
             <h4>{attendee.displayName}</h4>
-            <p>Username: {attendee.username}</p>
+            
             {attendee.bio && <p>Bio: {attendee.bio}</p>}
             {attendee.isHost && <p>Host of the activity</p>}
         </div>

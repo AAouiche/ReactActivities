@@ -24,7 +24,7 @@ export default function ActivityForm() {
   const today = new Date();
  
   const [activity, setActivity] = useState<Activity>({
-    id: "",
+    id: undefined,
     title: "",
     description: "",
     date: new Date(currentDate),
@@ -67,12 +67,17 @@ export default function ActivityForm() {
     const { name, value } = event.target;
     setActivity({ ...activity, [name]: value });
 };
+const handleCancel = () => {
+  if (id) {
+      navigate(`/activity/${id}`);
+  }
+};
 
 
 const handleSubmit = async (values:Activity) => {
   try {
     activityStore.setErrors([]);
-    if (values.id == "") {
+    if (values.id == undefined) {
       const createdActivity = await activityStore.createActivity(values);
       //navigate(`/activity/${createdActivity.id}`);
     } else {
@@ -121,7 +126,9 @@ const handleSubmit = async (values:Activity) => {
            <CustomTextInput name="venue" placeholder="Venue" label="Venue" />
            
            <Button primary type="submit" content="Submit" />
-           <Button type="button" content="Cancel" />
+           {id && (
+            <Button type="button" content="Cancel" onClick={handleCancel} />
+           )}
          </Form>
         )}
       </Formik>

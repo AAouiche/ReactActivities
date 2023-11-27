@@ -34,12 +34,16 @@ export default observer(function ActivityDetailedSidebar ({attendee}:Props) {
                     Host
                 </Label>
             )}
-            <Image size='tiny' src={'/assets/user.png'} />
+            <Image
+    size='tiny'
+    src={attendee.imageUrl || '/assets/user.png'}
+    style={{ width: '50px', height: '50px', objectFit: 'cover' }}  
+/>
             <Item.Content verticalAlign='middle'>
                 <Item.Header key={attendee.username} as='h3'>
                     <Link to={`#`}>{attendee.username}</Link>
                 </Item.Header>
-                <Item.Extra style={{ color: 'orange' }}>Following</Item.Extra>
+                
             </Item.Content>
         </Item>
     ))}

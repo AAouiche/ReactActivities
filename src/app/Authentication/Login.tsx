@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import agent from "../api/agent";
 import { useStore } from "../Stores/rootStore";
 import Debug from "../Debug/Debug";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
@@ -82,6 +82,9 @@ export default function Login() {
               
                 <button type="submit">Login</button>
               </form>
+              <div className="action-link">
+                Don't have an account? <Link to="/register">Register</Link>
+              </div>
             </div>
           </div>
         )}

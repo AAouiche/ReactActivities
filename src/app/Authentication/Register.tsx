@@ -2,33 +2,28 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useStore } from "../Stores/rootStore";
 import Debug from "../Debug/Debug";
+import { Link, useNavigate } from "react-router-dom";
 
 const schema = Yup.object().shape({
-    email: Yup.string()
-      .required("Email is a required field")
-      .email("Invalid email format"),
-      username: Yup.string()
-      .required("Username is a required field")
-      .email("Invalid email format"),
-    password: Yup.string()
-      .required("Password is a required field")
-      .min(8, "Password must be at least 8 characters")
-      .matches(/[a-z]/, "Password must contain at least one lowercase char")
-      .matches(/[A-Z]/, "Password must contain at least one uppercase char")
-      .matches(/[a-zA-Z]+[^a-zA-Z\s]+/, "Password must contain at least one number")
-      .matches(/[0-9]/, "Password must contain a number")
-      .matches(/[@$!%*?&#]/, "Password must contain a special character"),
-  });
+  email: Yup.string()
+    .required("Email is a required field")
+    .email("Invalid email format"),
+  password: Yup.string()
+    .required("Password is a required field")
+    .min(8, "Password must be at least 8 characters"),
+});
 
 export default function Register() {
   const { userStore } = useStore();
+  const navigate = useNavigate();
   return (
     <Formik
       validationSchema={schema}
-      initialValues={{ email: "", username: "", password: "", confirmPassword: "" }}
+      initialValues={{ email: "", displayName: "", password: "", confirmPassword: "" }}
       onSubmit={async (values) => {
         try {
           await userStore.register(values);
+          navigate('/activities');
           console.log('Registered', values);
         } catch (error) {
           console.error('Registration failed', error);
@@ -62,15 +57,15 @@ export default function Register() {
               </p>
               <input
                 type="text"
-                name="username"
+                name="displayName"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.username}
-                placeholder="Enter username"
+                value={values.displayName}
+                placeholder="Enter displayName"
                 className="form-control"
               />
               <p className="error">
-                {errors.username && touched.username && errors.username}
+                {errors.displayName && touched.displayName && errors.displayName}
               </p>
               <input
                 type="password"
@@ -85,11 +80,13 @@ export default function Register() {
                 {errors.password && touched.password && errors.password}
               </p>
              
-              <p className="error">
-                {errors.confirmPassword && touched.confirmPassword && errors.confirmPassword}
-              </p>
+             
               <button type="submit">Register</button>
+
             </form>
+            <div className="action-link">
+              Already have an account? <Link to="/login">Login</Link>
+            </div>
           </div>
         </div>
       )}

@@ -50,7 +50,7 @@ function ActivityList() {
             </Button>
             hfghgfhdf
 
-            {/* Pagination Controls */}
+           
             <div style={{ marginTop: '20px', textAlign: 'center' }}>
                 <Button onClick={handlePreviousPage} disabled={currentPage <= 1}>
                     Previous

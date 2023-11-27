@@ -32,7 +32,7 @@ class ActivityStore {
     loadActivities = async () => {
         try {
             this.loading = true;
-            const response = await agent.Activities.list(this.currentPage, this.pageSize);
+            const response = await agent.Activities.list(this.currentPage, this.pageSize,this.currentFilter,this.selectedDate);
             const { items, metadata } = response;
             
             runInAction(() => {
@@ -128,6 +128,7 @@ class ActivityStore {
     loadActivity = async (id: string) => {
         
         let activity = this.getActivity(id);
+        console.log(this.activityMap);
         if (activity) {
             
             runInAction(() => {
@@ -253,6 +254,7 @@ class ActivityStore {
     }
     setFilter = (filter: "all" | "going" | "hosting") => {
         this.currentFilter = filter;
+        this.loadActivities(); 
         console.log(this.currentFilter)
     }
     get filteredActivities(): Activity[] {
@@ -276,14 +278,30 @@ class ActivityStore {
         if (this.selectedDate) {
             return filteredByType.filter(activity => activity.date && activity.date.toISOString().split('T')[0] === this.selectedDate!.toISOString().split('T')[0]);
         }
-    
+       // this.adjustTotalCount(filteredByType.length);
         return filteredByType;
     }
     isFilterActive(filter: "all" | "going" | "hosting"): boolean {
         return this.currentFilter === filter;
     }
+    adjustTotalCount(length:number){
+        runInAction(()=>{
+            this.totalCount = length;
+        }
+        );
+        
+    }
+    get totalPages() {
+        return Math.ceil(this.totalCount / this.pageSize);
+    }
+
     clearSelectedDate() {
         this.selectedDate = null;
+        this.loadActivities();
+    }
+    setDate(date:Date) {
+        this.selectedDate = date;
+        this.loadActivities(); 
     }
 }
 

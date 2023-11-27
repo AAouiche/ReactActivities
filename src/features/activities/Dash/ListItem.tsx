@@ -21,9 +21,9 @@ function ListItem({activity}: Props){
 
 
     function handleDelete(event: React.MouseEvent<HTMLButtonElement>, id: string) {
-        event.preventDefault();  // Using event here
+        event.preventDefault();  
     
-        // Confirm deletion
+        
         const isConfirmed = window.confirm("Are you sure you want to delete this activity?");
     
         if (!isConfirmed) {
@@ -46,8 +46,8 @@ function ListItem({activity}: Props){
         {activity.title}
     </Item.Header>
     <Item.Description>Hosted by {activity.host!.username}</Item.Description>
-
-    {/* Conditionally render labels based on user role */}
+    {activity.category && <Label basic content={activity.category} />}
+   
     {activity.hosting ? (
         <Label color="blue">Hosting</Label>
     ) : activity.going ? (

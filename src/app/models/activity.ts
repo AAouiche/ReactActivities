@@ -13,5 +13,5 @@ export interface Activity {
     hosting?:boolean;
     host?: Attendee;
     
-    attendees?: Attendee[]; // This line includes an array of attendees
+    attendees?: Attendee[]; 
 }
