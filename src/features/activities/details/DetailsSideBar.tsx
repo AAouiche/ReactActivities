@@ -38,7 +38,7 @@ export default observer(function ActivityDetailedSidebar ({attendee}:Props) {
     size='tiny'
     src={attendee.imageUrl || '/assets/user.png'}
     style={{ width: '50px', height: '50px', objectFit: 'cover' }}  
-/>
+        />
             <Item.Content verticalAlign='middle'>
                 <Item.Header key={attendee.username} as='h3'>
                     <Link to={`#`}>{attendee.username}</Link>
@@ -47,7 +47,7 @@ export default observer(function ActivityDetailedSidebar ({attendee}:Props) {
             </Item.Content>
         </Item>
     ))}
-</List>
+       </List>
             </Segment>
         </>
 

@@ -40,18 +40,20 @@ export default class UserStore{
         return this.user;
     }
     login = async (submission: form) => {
+      
+
       const user = await agent.Account.login(submission);
       runInAction(() => {
           this.user = user;
           this.isLoggedIn = true;
-          console.log('Logged in user object:', user);
+         console.log('Logged in user object:', user);
   
          
-          if (user.token) {
-              this.setToken(user.token);
+           if (user.token) {
+           this.setToken(user.token);
               
           }
-      });
+       });
   };
     register = async (submission:form)=>{
       try {

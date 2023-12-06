@@ -11,7 +11,7 @@ import { PaginatedResult } from "../models/PaginatedResult";
 
 //const navigate = useNavigate();
 
-axios.defaults.baseURL = 'https://localhost:44314/api';
+axios.defaults.baseURL = 'https://newactivityproject-production.up.railway.app/api';
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 axios.interceptors.response.use(
@@ -94,7 +94,8 @@ const Activities = {
     }),
     edit: (activity: Activity) => requests.put('/Activity/Edit', activity), 
     delete: (id: string) => requests.delete(`/Activity/Delete/${id}`),
-    attend:(id:string) => requests.post(`/Activity/Attending/${id}`,{})
+    attend:(id:string) => requests.post(`/Activity/Attending/${id}`,{}),
+    testCreate: (body = {}, headers = {}) => requests.post('/Activity/TestCreate', body, headers)
 }
 const Account ={
     LoggedIn: ():Promise<User>=> requests.get('/Account/getUser'),
