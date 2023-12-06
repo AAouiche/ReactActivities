@@ -1,4 +1,4 @@
-# Step 1: Build the application
+
 FROM node:14 as build
 WORKDIR /app
 COPY package*.json ./
