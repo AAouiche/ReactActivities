@@ -53,7 +53,7 @@ function ListItem({activity}: Props){
     ) : activity.going ? (
         <Label color="green">Attending</Label>
     ) : null}
-</Item.Content>
+      </Item.Content>
                 </Item.Group>
             </Segment>
             <Segment>

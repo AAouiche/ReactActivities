@@ -30,6 +30,7 @@ class ActivityStore {
     
 
     loadActivities = async () => {
+        console.log(`Loading activities with filter: ${this.currentFilter} and page: ${this.currentPage}`);
         try {
             this.loading = true;
             const response = await agent.Activities.list(this.currentPage, this.pageSize,this.currentFilter,this.selectedDate);
@@ -54,6 +55,7 @@ class ActivityStore {
     };
    setCurrentPage = (page: number) => {
     this.currentPage = page;
+    console.log(`Page set to ${page}, current filter: ${this.currentFilter}`);
     this.loadActivities(); 
 };
 

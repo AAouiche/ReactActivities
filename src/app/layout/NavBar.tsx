@@ -13,7 +13,7 @@ import {  useNavigate, useParams } from 'react-router-dom';
     
     function handleLogout() {
         userStore.logout();
-        navigate('/'); // Navigate to the home page
+        navigate('/'); 
     }
     console.log('NavBar Rendering:', userStore.user);
     return(
@@ -34,7 +34,7 @@ import {  useNavigate, useParams } from 'react-router-dom';
                     <Dropdown pointing='top left' text={userStore.user?.userName}>
                         <Dropdown.Menu>
                             <Dropdown.Item as={NavLink} to='/profile' name = 'Profile' text='Profile' icon='user' />
-                            <Dropdown.Item text='Settings' icon='settings' />
+                            
                             <Dropdown.Item text='Logout' icon='power' onClick={handleLogout} />
                         </Dropdown.Menu>
                     </Dropdown>

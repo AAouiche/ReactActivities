@@ -18,7 +18,7 @@ const AttendeeModal: React.FC<AttendeeModalProps> = ({ attendee, open, onClose }
           <p><strong>Username:</strong> {attendee.username}</p>
           <p><strong>Display Name:</strong> {attendee.displayName}</p>
           <p><strong>Bio:</strong> {attendee.bio}</p>
-          {/* You can add more fields here if needed */}
+          
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
