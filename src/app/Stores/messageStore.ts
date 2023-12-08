@@ -17,7 +17,7 @@ class MessageStore {
         }
         console.log(activityId);
         this.hubConnection = new HubConnectionBuilder()
-        .withUrl('https://localhost:44314/chat?activityId=' + activityId, {
+        .withUrl('https://newactivityproject-production-47a4.up.railway.app/chat?activityId=' + activityId, {
             accessTokenFactory: () => token
         })
             .configureLogging(LogLevel.Information)
