@@ -11,7 +11,7 @@ import { PaginatedResult } from "../models/PaginatedResult";
 
 //const navigate = useNavigate();
 
-axios.defaults.baseURL = 'https://newactivityproject-production-47a4.up.railway.app/api';
+axios.defaults.baseURL = 'https://localhost:44314/api';
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 axios.interceptors.response.use(
@@ -28,10 +28,11 @@ axios.interceptors.response.use(
 
             switch (response.status) {
                 case 400:
-                    
+                    const errorMessage = response.data || 'Bad request error';
+                    toast.error(errorMessage);
                 if (response.data.stackTrace) {
                     const modalStateErrors = response.data.stackTrace.split(',');
-            
+                   
                    
                     console.log(modalStateErrors);
             
@@ -44,17 +45,17 @@ axios.interceptors.response.use(
                 }
                 
                 case 401:
-                   // toast.warn("You're not authorized to access this resource or perform this operation.");
+                   toast.warn(response.data.error || 'You are not authorized to access this resource or perform this operation.');
                     break;
                 case 403:
-                    //toast.warn("Forbidden. You don’t have permission to perform this operation.");
+                    toast.warn("Forbidden. You don’t have permission to perform this operation.");
                     break;
                 case 404:
                     //toast.error("Resource not found.");
                     router.navigate('not-found'); 
                     break;
                 default:
-                  //  toast.error("An unexpected server error occurred.");
+                   toast.error("An unexpected server error occurred.");
             }
         } else {
             console.error("Error Message:", error.message); 

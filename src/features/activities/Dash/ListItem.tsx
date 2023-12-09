@@ -74,12 +74,13 @@ function ListItem({activity}: Props){
                 floated='right'
                 content='view'
                 />
-                <Button
+
+                {activity.hosting == true &&(<Button
                 onClick={(e) => handleDelete(e, activity.id!)}
                 color='blue'
                 floated='right'
                 content='delete'
-                />
+                />)}
             </Segment>
          </Segment.Group>
 

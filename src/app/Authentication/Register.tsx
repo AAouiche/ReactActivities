@@ -10,8 +10,14 @@ const schema = Yup.object().shape({
     .email("Invalid email format"),
   password: Yup.string()
     .required("Password is a required field")
-    .min(8, "Password must be at least 8 characters"),
+    .min(8, "Password must be at least 8 characters")
+    .matches(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/, "Password must include at least one special character"),
+    displayName: Yup.string()
+    .required("Display Name is a required field")
+    .min(2, "Display Name must be at least 2 characters")
+    .max(50, "Display Name must be less than 50 characters"),
 });
+
 
 export default function Register() {
   const { userStore } = useStore();

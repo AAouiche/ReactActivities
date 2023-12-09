@@ -41,19 +41,27 @@ export default class UserStore{
     }
     login = async (submission: form) => {
       
-
-      const user = await agent.Account.login(submission);
-      runInAction(() => {
-          this.user = user;
-          this.isLoggedIn = true;
-         console.log('Logged in user object:', user);
-  
-         
-           if (user.token) {
-           this.setToken(user.token);
-              
+        try{
+          const user = await agent.Account.login(submission);
+          runInAction(() => {
+              this.user = user;
+              this.isLoggedIn = true;
+             console.log('Logged in user object:', user);
+      
+             
+               if (user.token) {
+               this.setToken(user.token);
+                  
+              }
+           });
+        }catch(error:any){
+          console.error('Login failed', error);
+          let errorMessage = 'Login failed. Please try again.';
+          if (error.response && error.response.status === 401) {
+              errorMessage = 'Invalid credentials. Please try again.';
           }
-       });
+        }
+      
   };
     register = async (submission:form)=>{
       try {
