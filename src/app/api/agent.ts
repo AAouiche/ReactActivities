@@ -11,7 +11,7 @@ import { PaginatedResult } from "../models/PaginatedResult";
 
 //const navigate = useNavigate();
 
-axios.defaults.baseURL = 'https://newactivityproject-production-47a4.up.railway.app';
+axios.defaults.baseURL = 'https://newactivityproject-production-47a4.up.railway.app/api';
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 axios.interceptors.response.use(
